@@ -8,23 +8,30 @@ defmodule ToDoAPIWeb.UserController do
   alias ToDoAPI.Res.User
 
   action_fallback ToDoAPIWeb.FallbackController
-  #Une fonction prends tjs conn en premier paramètre.
-  #Paramètre de l'URL -> l'id de l'utilisateur qui sera retranscrit dans la variable userID
-  #email qui sera retranscrite dans la variable email
-  #username qui sera retranscrit dans la variable username
-  def index(conn, %{"id" => userID}, %{"email" => email}, %{"username" => username}) do
 
+  #Une fonction prends tjs conn en premier paramètre.
+  #Paramètre de l'URL -> email qui sera retranscrite dans la variable email
+  #username qui sera retranscrit dans la variable username
+  #http://localhost:4000/api/users?email=email@email.com&username=email
+  def index(conn, %{"email" => email, "username" => username}) do
+    user = Res.get_user_email_username(email, username)
+    Logger.info(inspect(user, pretty: true))
+    render(conn, "show.json", user: user)
   end
-  @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
+  #Fonction qui recevra toutes les URL http://localhost:4000/api/users blablabla (donc users sans /)
+  #Renvoyer une erreur
   def index(conn, _params) do
-    Logger.info(inspect(conn, pretty: true))
-    conn = Plug.Conn.fetch_query_params(conn)
+    #conn = Plug.Conn.fetch_query_params(conn)
+    #Logger.info(inspect(conn, pretty: true))
     #users = Res.list_users()
-    Logger.info(inspect(conn, pretty: true))
-    params = conn.query_params
-    Logger.info("Para1111: #{inspect(params)}")
-    users = Enum.filter(Res.list_users(), fn(user) -> user.username == params["username"] && user.email == params["email"] end)
-    render(conn, "index.json", users: users)
+    #params = conn.query_params
+    #Logger.info(inspect(conn))
+    #users = Enum.filter(Res.list_users(), fn(user) -> user.username == params["username"] && user.email == params["email"] end)
+    #render(conn, "index.json", users: users)
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(ToDoAPIWeb.ErrorView)
+    |> render("405.json")
   end
 
   @spec create(any, map) :: any

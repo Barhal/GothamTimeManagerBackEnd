@@ -37,6 +37,8 @@ defmodule ToDoAPI.Res do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
+  #Voir doc -> https://hexdocs.pm/ecto/Ecto.Repo.html#c:get_by/3
+  def get_user_email_username(email, username), do: Repo.get_by(User, [username: username, email: email])
 
   @doc """
   Creates a user.
