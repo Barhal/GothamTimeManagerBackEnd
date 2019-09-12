@@ -28,6 +28,8 @@ defmodule ToDoAPIWeb.UserController do
     #Logger.info(inspect(conn))
     #users = Enum.filter(Res.list_users(), fn(user) -> user.username == params["username"] && user.email == params["email"] end)
     #render(conn, "index.json", users: users)
+    #users = Res.list_users()
+    #render(conn, "index.json", users: users)
     conn
     |> put_status(:unauthorized)
     |> put_view(ToDoAPIWeb.ErrorView)

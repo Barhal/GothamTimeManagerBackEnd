@@ -26,7 +26,7 @@ defmodule ToDoAPIWeb.Router do
 
   scope "/api", ToDoAPIWeb do
     pipe_through :api
-    resources "/users", UserController, except: [:new, :edit, :show]
+    resources "/users", UserController, except: [:new, :edit]
     # a GET method : http://localhost:4000/api/users?email=XXX&username=YYY
     resources "/workingtimes", WorkingtimeController,
       except: [:new, :edit, :index, :show, :create]
