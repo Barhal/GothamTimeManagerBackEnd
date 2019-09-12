@@ -47,6 +47,7 @@ defmodule ToDoAPIWeb.UserController do
     user = Res.get_user!(id)
 
     with {:ok, %User{} = user} <- Res.update_user(user, user_params) do
+      Logger.info(inspect(user))
       render(conn, "show.json", user: user)
     end
   end

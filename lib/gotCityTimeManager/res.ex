@@ -7,7 +7,9 @@ defmodule ToDoAPI.Res do
   alias ToDoAPI.Repo
 
   alias ToDoAPI.Res.User
+  alias ToDoAPI.Res.Workingtime
   require Logger
+
 
   @doc """
   Returns the list of users.
@@ -188,6 +190,11 @@ defmodule ToDoAPI.Res do
       |> Repo.insert()
     else
       new_status = !last_clock.status
+      if new_status === false do
+        %Workingtime{}
+        |> Workingtime.changeset(%{start: last_clock.time, end: time, user: user_id})
+        |> Repo.insert()
+      end
 
       %Clock{}
       |> Clock.changeset(%{time: time, status: new_status, user: user_id})
@@ -241,8 +248,6 @@ defmodule ToDoAPI.Res do
   def change_clock(%Clock{} = clock) do
     Clock.changeset(clock, %{})
   end
-
-  alias ToDoAPI.Res.Workingtime
 
   @doc """
   Returns the list of workingtimes.
