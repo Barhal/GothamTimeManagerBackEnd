@@ -37,8 +37,9 @@ defmodule ToDoAPI.Res do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
-  #Voir doc -> https://hexdocs.pm/ecto/Ecto.Repo.html#c:get_by/3
-  def get_user_email_username(email, username), do: Repo.get_by(User, [username: username, email: email])
+  # Voir doc -> https://hexdocs.pm/ecto/Ecto.Repo.html#c:get_by/3
+  def get_user_email_username(email, username),
+    do: Repo.get_by(User, username: username, email: email)
 
   @doc """
   Creates a user.
@@ -136,6 +137,12 @@ defmodule ToDoAPI.Res do
   """
   def get_clock!(id), do: Repo.get!(Clock, id)
 
+  def get_clock_user(user_id) do
+    Clock
+    |> where([c], c.user == ^user_id)
+    |> Repo.all()
+  end
+
   @doc """
   Creates a clock.
 
@@ -231,7 +238,9 @@ defmodule ToDoAPI.Res do
 
   """
   def get_workingtime!(id), do: Repo.get!(Workingtime, id)
-  def get_workingtime_userid_workingtime_id(user_id, workingtime_id), do: Repo.get_by(Workingtime, [user: user_id, id: workingtime_id])
+
+  def get_workingtime_userid_workingtime_id(user_id, workingtime_id),
+    do: Repo.get_by(Workingtime, user: user_id, id: workingtime_id)
 
   @doc """
   Creates a workingtime.
@@ -250,11 +259,13 @@ defmodule ToDoAPI.Res do
     |> Workingtime.changeset(attrs)
     |> Repo.insert()
   end
+
   def create_workingtime_start_end_user(start_value, end_value, user_id) do
     %Workingtime{}
     |> Workingtime.changeset(%{start: start_value, end: end_value, user: user_id})
     |> Repo.insert()
   end
+
   @doc """
   Updates a workingtime.
 
@@ -304,12 +315,12 @@ defmodule ToDoAPI.Res do
 
   def get_multiple_workingtimes(user_id, start_value, end_value) do
     Workingtime
-    #|> Ecto.Query.preload([:user])
+    # |> Ecto.Query.preload([:user])
     |> where([w], w.user == ^user_id and w.start >= ^start_value and w.end <= ^end_value)
     |> Repo.all()
   end
 
-  #def get_multiple_workingtimes(attrs \\ %{}) do
+  # def get_multiple_workingtimes(attrs \\ %{}) do
   #  Logger.info("HAHA")
   #  Logger.info(inspect(attrs))
   #  Logger.info("hahah")
@@ -317,42 +328,66 @@ defmodule ToDoAPI.Res do
   #  Logger.info(inspect(attrs["user_id"]))
   #  Repo.all(from(w in Workingtime, where: w.start >= ^attrs["start"] and w.end <= ^attrs["end"] and w.user == ^attrs["user_id"],
   #    select: %{start: w.start, user: w.user, end: w.end, id: w.id}))
-  #end
+  # end
 
-  #def get_workingtimes(attrs \\ %{}) do
+  # def get_workingtimes(attrs \\ %{}) do
   #  Logger.info(inspect(attrs))
   #  Repo.all(from(w in Workingtime, where: w.id == ^attrs["workingtime_id"] and w.user == ^attrs["user_id"],
   #    select: %{start: w.start, user: w.user, end: w.end, id: w.id}))
-  #end
+  # end
 
-
-  #Repo.all(from(w in Workingtime, join: u in User, on: u.id == w.user, where: w.start == ^sstart and w.end == ^eend, select:
-    #%{start: w.start, user_id: w.user, end: w.end, id: w.id, username: u.username, email: u.email}))
+  # Repo.all(from(w in Workingtime, join: u in User, on: u.id == w.user, where: w.start == ^sstart and w.end == ^eend, select:
+  # %{start: w.start, user_id: w.user, end: w.end, id: w.id, username: u.username, email: u.email}))
   def create_workingtimeWithUserId(attrs \\ %{}) do
     Logger.info(inspect(attrs), pretty: true)
     Logger.info(inspect(%Workingtime{}), pretty: true)
-    changeset = Workingtime.changeset(%Workingtime{}, %{user: attrs["user_id"], end: attrs["workingtime"]["end"], start: attrs["workingtime"]["start"]})
-    #Logger.info(changeset)
+
+    changeset =
+      Workingtime.changeset(%Workingtime{}, %{
+        user: attrs["user_id"],
+        end: attrs["workingtime"]["end"],
+        start: attrs["workingtime"]["start"]
+      })
+
+    # Logger.info(changeset)
     Repo.insert(changeset)
-    #%Workingtime{}
-    #|> Workingtime.changeset(attrs)
-    #|> Repo.insert()
+    # %Workingtime{}
+    # |> Workingtime.changeset(attrs)
+    # |> Repo.insert()
   end
+
   def get_clocksAllForUser(attrs \\ %{}) do
     Logger.info(inspect(attrs), pretty: true)
     Repo.all(from(c in Clock, where: c.user == ^attrs["user_id"]))
-      ##select: %{start: c.time, user: c.user, status: c.status, id: c.id}))
+    ## select: %{start: c.time, user: c.user, status: c.status, id: c.id}))
   end
+
   def get_clocksLastTimeFromUser(attrs \\ %{}) do
     Logger.info("ha")
     Logger.info(inspect(attrs), pretty: true)
-    Repo.one(from c in Clock, order_by: [desc: c.time], where: c.user == ^attrs["user_id"], select: c, limit: 1)
+
+    Repo.one(
+      from c in Clock,
+        order_by: [desc: c.time],
+        where: c.user == ^attrs["user_id"],
+        select: c,
+        limit: 1
+    )
   end
+
   @spec post_clocksCreate(nil | keyword | map) :: :ok | {:error, any}
   def post_clocksCreate(attrs \\ %{}) do
-    #Logger.info(inspect(attrs), pretty: true)
-    #_x = Res.get_clocksLastTimeFromUser(attrs \\ %{})
-    last_clock = Repo.one(from c in Clock, order_by: [desc: c.time], where: c.user == ^attrs["user_id"], select: c, limit: 1)
+    # Logger.info(inspect(attrs), pretty: true)
+    # _x = Res.get_clocksLastTimeFromUser(attrs \\ %{})
+    last_clock =
+      Repo.one(
+        from c in Clock,
+          order_by: [desc: c.time],
+          where: c.user == ^attrs["user_id"],
+          select: c,
+          limit: 1
+      )
+
     Logger.info("here")
     Logger.info(inspect(attrs), pretty: true)
     Logger.info(inspect(last_clock.id))
@@ -360,7 +395,7 @@ defmodule ToDoAPI.Res do
     new_status = !last_clock.status
     Logger.info("status last_clock #{inspect(last_clock.status)}")
     Logger.info("status new #{inspect(new_status)}")
-    #Logger.info(inspect(attrs["clock"]["time"]))
+    # Logger.info(inspect(attrs["clock"]["time"]))
     Logger.info("there1")
     {_, naive_datetime} = NaiveDateTime.from_iso8601(attrs["clock"]["time"])
     {userid, _} = Integer.parse(attrs["user_id"])
@@ -370,11 +405,11 @@ defmodule ToDoAPI.Res do
     Logger.info("clockObject is : #{inspect(c)}")
     Logger.info("there")
     Repo.insert(c)
-    #Logger.info(inspect(ff))
+    # Logger.info(inspect(ff))
   end
-  #Repo.one(from c in Clock, order_by: [desc: c.time], where: c.user == ^0, select: c, limit: 1)
-  #field :status, :boolean, default: false
-  #field :time, :naive_datetime
-  #field :user, :id
-end
 
+  # Repo.one(from c in Clock, order_by: [desc: c.time], where: c.user == ^0, select: c, limit: 1)
+  # field :status, :boolean, default: false
+  # field :time, :naive_datetime
+  # field :user, :id
+end
