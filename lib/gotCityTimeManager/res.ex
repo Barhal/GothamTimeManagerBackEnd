@@ -297,15 +297,21 @@ defmodule ToDoAPI.Res do
     Workingtime.changeset(workingtime, %{})
   end
 
-  def get_multiple_workingtimes(attrs \\ %{}) do
-    Logger.info("HAHA")
-    Logger.info(inspect(attrs))
-    Logger.info("hahah")
-    Logger.info(inspect(attrs["start"]))
-    Logger.info(inspect(attrs["user_id"]))
-    Repo.all(from(w in Workingtime, where: w.start >= ^attrs["start"] and w.end <= ^attrs["end"] and w.user == ^attrs["user_id"],
-      select: %{start: w.start, user: w.user, end: w.end, id: w.id}))
+  def get_multiple_workingtimes(user_id, start_value, end_value) do
+    Workingtime
+    |> where([w], w.user == ^user_id and w.start >= ^start_value and w.end <= ^end_value)
+    |> Repo.all()
   end
+
+  #def get_multiple_workingtimes(attrs \\ %{}) do
+  #  Logger.info("HAHA")
+  #  Logger.info(inspect(attrs))
+  #  Logger.info("hahah")
+  #  Logger.info(inspect(attrs["start"]))
+  #  Logger.info(inspect(attrs["user_id"]))
+  #  Repo.all(from(w in Workingtime, where: w.start >= ^attrs["start"] and w.end <= ^attrs["end"] and w.user == ^attrs["user_id"],
+  #    select: %{start: w.start, user: w.user, end: w.end, id: w.id}))
+  #end
 
   def get_workingtimes(attrs \\ %{}) do
     Logger.info(inspect(attrs))

@@ -29,11 +29,11 @@ defmodule ToDoAPIWeb.Router do
     resources "/users", UserController, except: [:new, :edit]
     # a GET method : http://localhost:4000/api/users?email=XXX&username=YYY
     resources "/workingtimes", WorkingtimeController,
-      except: [:new, :edit, :index, :show, :create]
+      except: [:new, :edit, :index, :create]
 
     # resources "/clocks", ClockController, only: [:show, :create]
 
-    get "/workingtimes/:user_id", WorkingtimeController, :testGetAllwtForUserId
+    #get "/workingtimes/:user_id", WorkingtimeController, :testGetAllwtForUserId
     get "/workingtimes/:user_id/:workingtime_id", WorkingtimeController, :testRoute
     post "/workingtimes/:user_id", WorkingtimeController, :testAddWorkingtime
     get "/clocks/:user_id", ClockController, :testGetAllClock
