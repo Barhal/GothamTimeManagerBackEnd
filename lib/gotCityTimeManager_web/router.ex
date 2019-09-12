@@ -27,7 +27,7 @@ defmodule ToDoAPIWeb.Router do
   scope "/api", ToDoAPIWeb do
     pipe_through :api
     resources "/users", UserController, except: [:new, :edit]
-    resources "/workingtimes", WorkingtimeController, only: [:show, :update, :delete]
+    resources "/workingtimes", WorkingtimeController, only: [:update, :delete]
 
     scope "/workingtimes" do
       get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime
@@ -36,6 +36,7 @@ defmodule ToDoAPIWeb.Router do
 
     scope "/clocks/" do
       get "/:user_id", ClockController, :get_clocks_for_user
+      get "/last/:user_id", ClockController, :get_last_clock_for_user
       post "/:user_id", ClockController, :post_clock_for_user
     end
     # resources "/clocks", ClockController, only: [:show, :create]

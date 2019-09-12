@@ -385,14 +385,14 @@ defmodule ToDoAPI.Res do
     ## select: %{start: c.time, user: c.user, status: c.status, id: c.id}))
   end
 
-  def get_clocksLastTimeFromUser(attrs \\ %{}) do
+  def get_clocksLastTimeFromUser(user_id \\ %{}) do
     Logger.info("ha")
-    Logger.info(inspect(attrs), pretty: true)
+    Logger.info(inspect(user_id), pretty: true)
 
     Repo.one(
       from c in Clock,
         order_by: [desc: c.time],
-        where: c.user == ^attrs["user_id"],
+        where: c.user == ^user_id,
         select: c,
         limit: 1
     )

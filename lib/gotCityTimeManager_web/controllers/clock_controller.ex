@@ -50,6 +50,12 @@ defmodule ToDoAPIWeb.ClockController do
     render(conn, "index.json", clocks: clocks)
   end
 
+  def get_last_clock_for_user(conn, %{"user_id" => user_id}) do
+    clocks = Res.get_clocksLastTimeFromUser(user_id)
+    render(conn, "show.json", clock: clocks)
+  end
+
+  #def testGetAllClock(conn, _params) do
   def post_clock_for_user(conn, %{"user_id" => user_id}) do
     time = Elixir.NaiveDateTime.add(Elixir.NaiveDateTime.utc_now(), 7200, :second)
 
