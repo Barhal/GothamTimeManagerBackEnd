@@ -299,6 +299,7 @@ defmodule ToDoAPI.Res do
 
   def get_multiple_workingtimes(user_id, start_value, end_value) do
     Workingtime
+    #|> Ecto.Query.preload([:user])
     |> where([w], w.user == ^user_id and w.start >= ^start_value and w.end <= ^end_value)
     |> Repo.all()
   end
