@@ -315,11 +315,13 @@ defmodule ToDoAPI.Res do
   #    select: %{start: w.start, user: w.user, end: w.end, id: w.id}))
   #end
 
-  def get_workingtimes(attrs \\ %{}) do
-    Logger.info(inspect(attrs))
-    Repo.all(from(w in Workingtime, where: w.id == ^attrs["workingtime_id"] and w.user == ^attrs["user_id"],
-      select: %{start: w.start, user: w.user, end: w.end, id: w.id}))
-  end
+  #def get_workingtimes(attrs \\ %{}) do
+  #  Logger.info(inspect(attrs))
+  #  Repo.all(from(w in Workingtime, where: w.id == ^attrs["workingtime_id"] and w.user == ^attrs["user_id"],
+  #    select: %{start: w.start, user: w.user, end: w.end, id: w.id}))
+  #end
+
+
   #Repo.all(from(w in Workingtime, join: u in User, on: u.id == w.user, where: w.start == ^sstart and w.end == ^eend, select:
     #%{start: w.start, user_id: w.user, end: w.end, id: w.id, username: u.username, email: u.email}))
   def create_workingtimeWithUserId(attrs \\ %{}) do

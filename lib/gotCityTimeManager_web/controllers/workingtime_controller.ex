@@ -54,7 +54,6 @@ defmodule ToDoAPIWeb.WorkingtimeController do
   end
   #http://localhost:4000/api/workingtimes/2/4
   def getOneWorkingTime(conn, %{"user_id" => user_id, "workingtime_id" => workingtime_id}) do
-    Logger.info("user_id = #{inspect(user_id)} + workingtime_id = #{inspect(workingtime_id)}")
     workingtime = Res.get_workingtime_userid_workingtime_id(user_id, workingtime_id)
     render(conn, "show.json", workingtime: workingtime)
   end

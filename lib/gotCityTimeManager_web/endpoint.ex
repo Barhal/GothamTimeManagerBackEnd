@@ -42,6 +42,7 @@ defmodule ToDoAPIWeb.Endpoint do
 
   plug Corsica,
     #origins: "http://localhost:8080",
+    allow_headers: ["access-control-allow-headers", "access-control-allow-origin", "content-type"],
     origins: "*",
     log: [rejected: :error, invalid: :warn, accepted: :debug]
 
