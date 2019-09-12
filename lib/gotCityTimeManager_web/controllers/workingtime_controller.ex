@@ -69,7 +69,7 @@ defmodule ToDoAPIWeb.WorkingtimeController do
            ) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.workingtime_path(conn, :show, workingtime))
+      #|> put_resp_header("location", Routes.workingtime_path(conn, :show, workingtime))
       |> render("show.json", workingtime: workingtime)
     end
   end

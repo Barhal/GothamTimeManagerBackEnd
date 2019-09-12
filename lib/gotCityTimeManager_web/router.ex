@@ -31,7 +31,7 @@ defmodule ToDoAPIWeb.Router do
 
     scope "/workingtimes" do
       get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime
-      post "/:user_id", WorkingtimeController, :create_Workingtime
+      post "/:user_id", WorkingtimeController, :create_workingtime
     end
 
     scope "/clocks/" do
