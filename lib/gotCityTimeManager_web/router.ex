@@ -39,12 +39,5 @@ defmodule ToDoAPIWeb.Router do
       get "/last/:user_id", ClockController, :get_last_clock_for_user
       post "/:user_id", ClockController, :post_clock_for_user
     end
-    # resources "/clocks", ClockController, only: [:show, :create]
-
-    #get "/workingtimes/:user_id", WorkingtimeController, :testGetAllwtForUserId
-    #get "/workingtimes/:user_id/:workingtime_id", WorkingtimeController, :testRoute
-    #post "/workingtimes/:user_id", WorkingtimeController, :testAddWorkingtime
-    #get "/clocks/:user_id", ClockController, :testGetAllClock
-    #post "/clocks/:user_id", ClockController, :testGetLastClock
   end
 end
