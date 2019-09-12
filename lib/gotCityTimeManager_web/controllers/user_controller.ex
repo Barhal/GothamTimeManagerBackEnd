@@ -21,15 +21,6 @@ defmodule ToDoAPIWeb.UserController do
   #Fonction qui recevra toutes les URL http://localhost:4000/api/users blablabla (donc users sans /)
   #Renvoyer une erreur
   def index(conn, _params) do
-    #conn = Plug.Conn.fetch_query_params(conn)
-    #Logger.info(inspect(conn, pretty: true))
-    #users = Res.list_users()
-    #params = conn.query_params
-    #Logger.info(inspect(conn))
-    #users = Enum.filter(Res.list_users(), fn(user) -> user.username == params["username"] && user.email == params["email"] end)
-    #render(conn, "index.json", users: users)
-    #users = Res.list_users()
-    #render(conn, "index.json", users: users)
     conn
     |> put_status(:unauthorized)
     |> put_view(ToDoAPIWeb.ErrorView)
