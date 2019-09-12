@@ -161,6 +161,31 @@ defmodule ToDoAPI.Res do
     |> Repo.insert()
   end
 
+  def post_clock(user_id, time) do
+    last_clock =
+      Repo.one(
+        from c in Clock,
+          order_by: [desc: c.time],
+          where: c.user == ^user_id,
+          select: c,
+          limit: 1
+      )
+    if last_clock === nil do
+      Logger.info("im in nill")
+
+      %Clock{}
+      |> Clock.changeset(%{time: time, status: true, user: user_id})
+      |> Repo.insert()
+    else
+      new_status = !last_clock.status
+      Logger.info("imnot")
+
+      %Clock{}
+      |> Clock.changeset(%{time: time, status: new_status, user: user_id})
+      |> Repo.insert()
+    end
+  end
+
   @doc """
   Updates a clock.
 
