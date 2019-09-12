@@ -30,14 +30,20 @@ defmodule ToDoAPIWeb.Router do
     resources "/workingtimes", WorkingtimeController, only: [:show, :create, :update, :delete]
 
     scope "/workingtimes" do
-      get "/:user_id/:workingtime_id", WorkingtimeController, :getOneWorkingTime
+      get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime
+      post "/:user_id", WorkingtimeController, :create_Workingtime
+    end
+
+    scope "/clocks/" do
+      get "/:user_id", ClockController, :get_clock_for_user
+      post "/:user_id", ClockController, :post_clock_for_user
     end
     # resources "/clocks", ClockController, only: [:show, :create]
 
     #get "/workingtimes/:user_id", WorkingtimeController, :testGetAllwtForUserId
     #get "/workingtimes/:user_id/:workingtime_id", WorkingtimeController, :testRoute
-    post "/workingtimes/:user_id", WorkingtimeController, :testAddWorkingtime
-    get "/clocks/:user_id", ClockController, :testGetAllClock
-    post "/clocks/:user_id", ClockController, :testGetLastClock
+    #post "/workingtimes/:user_id", WorkingtimeController, :testAddWorkingtime
+    #get "/clocks/:user_id", ClockController, :testGetAllClock
+    #post "/clocks/:user_id", ClockController, :testGetLastClock
   end
 end
