@@ -14,7 +14,9 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     workingtimes = Res.list_workingtimes()
     render(conn, "index.json", workingtimes: workingtimes)
   end
+  def create(conn, %{"id" => user_id, "workingtime" => workingtime_params}) do
 
+  end
   def create(conn, %{"workingtime" => workingtime_params}) do
     with {:ok, %Workingtime{} = workingtime} <- Res.create_workingtime(workingtime_params) do
       conn
@@ -34,7 +36,7 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     workingtime = Res.get_workingtime!(id)
     render(conn, "show.json", workingtime: workingtime)
   end
-
+  #!!!
   def update(conn, %{"id" => id, "workingtime" => workingtime_params}) do
     workingtime = Res.get_workingtime!(id)
 
@@ -49,6 +51,12 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     with {:ok, %Workingtime{}} <- Res.delete_workingtime(workingtime) do
       send_resp(conn, :no_content, "")
     end
+  end
+  #http://localhost:4000/api/workingtimes/2/4
+  def getOneWorkingTime(conn, %{"user_id" => user_id, "workingtime_id" => workingtime_id}) do
+    Logger.info("user_id = #{inspect(user_id)} + workingtime_id = #{inspect(workingtime_id)}")
+    workingtime = Res.get_workingtime_userid_workingtime_id(user_id, workingtime_id)
+    render(conn, "show.json", workingtime: workingtime)
   end
   #http://localhost:4000/api/workingtimes/1?start=1991-02-21%2009%3A15%3A45&end=2025-02-21%2023%3A30%3A45
   #def testGetAllwtForUserId(conn,  %{"user_id" => user_id}) do
@@ -73,16 +81,16 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     #send_resp(conn, :no_content, "")
   #end
 
-  @spec testRoute(Plug.Conn.t(), any) :: Plug.Conn.t()
-  def testRoute(conn, _params) do
-    conn = Plug.Conn.fetch_query_params(conn)
-    params = conn.params
-    Logger.info(inspect(conn, pretty: true))
-    Logger.info(inspect(params, pretty: true))
-    work = Res.get_workingtimes(params)
-    json(conn, %{work: work})
+ # @spec testRoute(Plug.Conn.t(), any) :: Plug.Conn.t()
+  #def testRoute(conn, _params) do
+  #  conn = Plug.Conn.fetch_query_params(conn)
+  #  params = conn.params
+  #  Logger.info(inspect(conn, pretty: true))
+  #  Logger.info(inspect(params, pretty: true))
+  #  work = Res.get_workingtimes(params)
+  #  json(conn, %{work: work})
     #send_resp(conn, :no_content, "")
-  end
+  #end
 
   def testAddWorkingtime(conn, _params) do
     conn = Plug.Conn.fetch_query_params(conn)

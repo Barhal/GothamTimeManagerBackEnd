@@ -41,7 +41,8 @@ defmodule ToDoAPIWeb.Endpoint do
     signing_salt: "dM2JridL"
 
   plug Corsica,
-    origins: "http://localhost:8080",
+    #origins: "http://localhost:8080",
+    origins: "*",
     log: [rejected: :error, invalid: :warn, accepted: :debug]
 
   plug ToDoAPIWeb.Router

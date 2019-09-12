@@ -231,6 +231,7 @@ defmodule ToDoAPI.Res do
 
   """
   def get_workingtime!(id), do: Repo.get!(Workingtime, id)
+  def get_workingtime_userid_workingtime_id(user_id, workingtime_id), do: Repo.get_by(Workingtime, [user: user_id, id: workingtime_id])
 
   @doc """
   Creates a workingtime.
