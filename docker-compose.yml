@@ -1,30 +1,39 @@
 #docker-compose.yml
-version: "2"
+version: "3"
 services:
   phoenix:
     build:
       context: .
     environment:
-      PGUSER: postgres
-      PGPASSWORD: postgres
-      PGDATABASE: gotcitytimemanager_dev
-      PGHOST: database
-      PGPORT: 5432
+      #- DATABASE_URL=ecto://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+      PGUSER: ${DB_USER}
+      PGPASSWORD: ${DB_PASSWORD}
+      PGDATABASE: ${DB_NAME}
+      PGHOST: ${DB_HOST}
+      PGPORT: ${DB_PORT}
     ports:
       - "4000:4000"
     env_file:
       - .env
     links:
-      - database
+      - db
     depends_on:
-      - database
-  database:
+      - db
+  db:
     image: postgres:11.0
     volumes:
-      - /var/library/postgres
+      - pgdata:/var/lib/postgresql/data
+    command: -p ${DB_PORT}
+    restart: always
     environment:
-      PGUSER: postgres
-      PGPASSWORD: postgres
-      PGDATABASE: gotcitytimemanager_dev
-      DB_HOST: database
-      PGPORT: 5432
+      #POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+      # PGUSER: postgres
+      # PGPASSWORD: postgres
+      # PGDATABASE: gotcitytimemanager_dev
+      # DB_HOST: database
+      # PGPORT: 5432
+volumes:
+  pgdata:
