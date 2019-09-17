@@ -2,7 +2,6 @@ defmodule ToDoAPIWeb.ClockController do
   use ToDoAPIWeb, :controller
 
   require Logger
-  import Ecto
 
   alias ToDoAPI.Res
   alias ToDoAPI.Res.Clock
