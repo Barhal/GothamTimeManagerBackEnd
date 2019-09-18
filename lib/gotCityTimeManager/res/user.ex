@@ -5,6 +5,9 @@ defmodule ToDoAPI.Res.User do
   schema "users" do
     field :email, :string
     field :username, :string
+    field :password_hash, :string, null: false
+    field :role, :string
+    field :team, :id
 
     timestamps()
   end
