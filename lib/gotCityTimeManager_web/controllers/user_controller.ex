@@ -59,4 +59,20 @@ defmodule ToDoAPIWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+  #sign_in expect object body like this
+  # {
+	#   "email": "Retest.test@ddddd",
+	#   "password": "password"
+  # }
+  def sign_in(conn, %{"email" => email, "password" => password}) do
+    Logger.info("SignInMethod")
+    Logger.info(inspect(Res.token_sign_in(email, password)))
+    case Res.token_sign_in(email, password) do
+      {:ok, token, _claims} ->
+        conn |> render("jwt.json", jwt: token)
+      _ ->
+        Logger.info("Error sign-in")
+        {:error, :unauthorized}
+    end
+  end
 end

@@ -17,7 +17,7 @@ config :gotCityTimeManager, ToDoAPI.Repo,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
 secret_key_base =
-  System.get_env("SECRET_KEY_BASE") ||
+  System.get_env("KrcEr70LkPqXBUut/DH+2r5V2dt0dPr7zj6eEtn2FzsMmBZvQHmX+gkV3/clZqpM") ||
     raise """
     environment variable SECRET_KEY_BASE is missing.
     You can generate one by calling: mix phx.gen.secret

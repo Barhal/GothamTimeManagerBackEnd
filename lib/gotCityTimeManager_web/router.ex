@@ -24,10 +24,11 @@ defmodule ToDoAPIWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", ToDoAPIWeb do
+  scope "/api/v1", ToDoAPIWeb do
     pipe_through :api
     resources "/users", UserController, except: [:new, :edit]
     resources "/workingtimes", WorkingtimeController, only: [:update, :delete]
+    post "/sign_in", UserController, :sign_in
 
     scope "/workingtimes" do
       get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime

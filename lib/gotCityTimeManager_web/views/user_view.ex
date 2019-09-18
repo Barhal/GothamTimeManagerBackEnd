@@ -17,4 +17,7 @@ defmodule ToDoAPIWeb.UserView do
       role: user.role,
       team: user.team}
   end
+  def render("jwt.json", %{jwt: jwt}) do
+    %{jwt: jwt}
+  end
 end

@@ -4,10 +4,11 @@ defmodule ToDoAPI.Res do
   """
 
   import Ecto.Query, warn: false
+  import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   alias ToDoAPI.Repo
-
   alias ToDoAPI.Res.User
   alias ToDoAPI.Res.Workingtime
+  alias ToDoAPI.Guardian
   require Logger
 
 
@@ -145,7 +146,6 @@ defmodule ToDoAPI.Res do
     |> Repo.all()
   end
 
-
   def get_last_clock_user(user_id \\ %{}) do
     Repo.one(
       from c in Clock,
@@ -189,6 +189,7 @@ defmodule ToDoAPI.Res do
       |> Clock.changeset(%{time: time, status: true, user: user_id})
       |> Repo.insert()
     else
+
       new_status = !last_clock.status
       if new_status === false do
         %Workingtime{}
@@ -454,4 +455,49 @@ defmodule ToDoAPI.Res do
   def change_team(%Team{} = team) do
     Team.changeset(team, %{})
   end
+  #GUARDIAN SIGN IN TOKEN
+  #GUARDIAN SIGN IN TOKEN
+  #GUARDIAN SIGN IN TOKEN
+  #GUARDIAN SIGN IN TOKEN
+  defp get_by_email(email) when is_binary(email) do
+    Logger.info("get_by_email")
+    case Repo.get_by(User, email: email) do
+      nil ->
+        Logger.info("dummy")
+        dummy_checkpw()
+
+        {:error, "Login error."}
+      user ->
+        Logger.info(inspect(user))
+        {:ok, user}
+    end
+
+  end
+  defp verify_password(password, %User{} = user) when is_binary(password) do
+    Logger.info("verify_password")
+    if checkpw(password, user.password_hash) do
+      Logger.info(password)
+      {:ok, user}
+    else
+      {:error, :invalid_password}
+    end
+
+  end
+  defp email_password_auth(email, password) when is_binary(email) and is_binary(password) do
+         with {:ok, user} <- get_by_email(email),
+    do: verify_password(password, user)
+  end
+  def token_sign_in(email, password) do
+    Logger.info("TokenSignInMethod")
+    case email_password_auth(email, password) do
+      {:ok, user} ->
+        Logger.info("TokenSignInMethod1")
+        Guardian.encode_and_sign(user)
+      _ ->
+        {:error, :unauthorized}
+    end
+  end
+  #GUARDIAN SIGN IN TOKEN
+  #GUARDIAN SIGN IN TOKEN
+  #GUARDIAN SIGN IN TOKEN
 end
