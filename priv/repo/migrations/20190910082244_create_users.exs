@@ -3,8 +3,11 @@ defmodule ToDoAPI.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :username, :string
-      add :email, :string
+      add :username, :string, null: false
+      add :email, :string, null: false
+      add :password_hash, :string, null: false
+      add :role, :string
+      add :team, references(:teams, on_delete: :nothing)
 
       timestamps()
     end
