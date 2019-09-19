@@ -58,6 +58,12 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     workingtime = Res.get_workingtime_userid_workingtime_id(user_id, workingtime_id)
     render(conn, "show.json", workingtime: workingtime)
   end
+  # http://localhost:4000/api/workingtimes?start=1991-02-21%2009%3A15%3A45&end=2025-02-21%2023%3A30%3A45
+  def get_workingtime_current_user(conn, %{"start" => start_value, "end" => end_value}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    workingtimes = Res.get_multiple_workingtimes(current_user.id, start_value, end_value)
+    render(conn, "index.json", workingtimes: workingtimes)
+  end
 
   # http://localhost:4000/api/workingtimes/1
   def create_workingtime(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do

@@ -29,31 +29,80 @@ defmodule ToDoAPIWeb.Router do
     plug Guardian.AuthPipeline
   end
 
-  scope "/api", ToDoAPIWeb do
+  pipeline :ismanager do
+    plug Guardian.AuthPipeline
+    plug ToDoAPIWeb.Plug.EnsureManager
+  end
+  pipeline :isadmin do
+    plug Guardian.AuthPipeline
+    plug ToDoAPIWeb.Plug.EnsureAdmin
+  end
+
+  scope "/login", ToDoAPIWeb do
     pipe_through :api
-
+    # Guest route
     post "/sign_in", UserController, :sign_in
-    resources "/users", UserController, except: [:new, :edit]
-    resources "/workingtimes", WorkingtimeController, only: [:update, :delete]
-
-    scope "/workingtimes" do
-      get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime
-      post "/:user_id", WorkingtimeController, :create_workingtime
-    end
-
-    scope "/clocks/" do
-      get "/:user_id", ClockController, :get_clocks_for_user
-      get "/last/:user_id", ClockController, :get_last_clock_for_user
-      post "/:user_id", ClockController, :post_clock_for_user
-    end
   end
 
   scope "/api", ToDoAPIWeb do
     pipe_through [:api, :jwt_authenticated]
-    #Test routes auth user###########################################
-    get "/my_user", UserController, :show
-    #################################################################
-    #resources "/users", UserController, except: [:new, :edit]
+    # Employee route
+    get "/me", UserController, :show_guardian
+    put "/users", UserController, :update_current_user
+    post "/clocks", ClockController, :post_clock_current_user
+    get "/workingtimes", WorkingtimeController, :get_workingtime_current_user
 
+    scope "/man" do
+      pipe_through [:ismanager]
+
+      scope "/workingtimes" do
+        get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime
+      end
+    end
+
+    scope "/adm" do
+      pipe_through [:isadmin]
+
+      scope "/clocks" do
+        get "/:user_id", ClockController, :get_clocks_for_user
+      end
+    end
   end
+
+  # scope "/api", ToDoAPIWeb do
+  #   pipe_through :api
+
+  #   post "/sign_in", UserController, :sign_in
+  #   #resources "/users", UserController, except: [:new, :edit]
+  # end
+
+  # scope "/api", ToDoAPIWeb do
+  #   pipe_though :api
+  #   pipe_though :jwt_authenticated
+  #   # Use the token to display the current user
+  #   get "/me", UserController, :show_guardian
+  # end
+
+  # scope "/api", ToDoAPIWeb do
+  #   pipe_through [:api, :jwt_authenticated, :ismanager]
+  #   #Test routes auth user###########################################
+  #   get "/my_user", UserController, :show_guardian
+  #   #################################################################
+  #   resources "/users", UserController, except: [:new, :edit]
+  #   resources "/workingtimes", WorkingtimeController, only: [:update, :delete, :show]
+
+  #   scope "/workingtimes" do
+  #     get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime
+  #     post "/:user_id", WorkingtimeController, :create_workingtime
+  #   end
+
+  #   scope "/clocks/" do
+  #     get "/:user_id", ClockController, :get_clocks_for_user
+  #     get "/last/:user_id", ClockController, :get_last_clock_for_user
+  #     post "/:user_id", ClockController, :post_clock_for_user
+  #   end
+  # end
+  # scope "/api", ToDoAPI do
+  #   pipe_through [:api, :jwt_authenticated, :isadmin]
+  # end
 end

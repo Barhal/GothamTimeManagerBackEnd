@@ -62,4 +62,15 @@ defmodule ToDoAPIWeb.ClockController do
       |> render("show.json", clock: clock)
     end
   end
+  # This method use the user.id of the token
+  def post_clock_current_user(conn, %{}) do
+    user = Guardian.Plug.current_resource(conn)
+    time = Elixir.NaiveDateTime.add(Elixir.NaiveDateTime.utc_now(), 7200, :second)
+
+    with {:ok, %Clock{} = clock} <- Res.post_clock(user.id, time) do
+      conn
+      |> put_status(:created)
+      |> render("show.json", clock: clock)
+    end
+  end
 end

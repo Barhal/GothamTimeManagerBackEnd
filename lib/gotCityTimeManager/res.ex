@@ -11,7 +11,6 @@ defmodule ToDoAPI.Res do
   alias ToDoAPI.Guardian
   require Logger
 
-
   @doc """
   Returns the list of users.
 
@@ -78,6 +77,26 @@ defmodule ToDoAPI.Res do
     user
     |> User.changeset(attrs)
     |> Repo.update()
+  end
+
+  #
+  def update_current_user(%User{} = user, attrs) do
+    Logger.info(inspect(user, pretty: true))
+    Logger.info(inspect(attrs, pretty: true))
+    Logger.info(inspect(attrs["username"], pretty: true))
+
+    if attrs["password"] === attrs["password_confirmation"] do
+      user
+      |> User.changeset(%{
+        email: attrs["email"],
+        username: attrs["username"],
+        password: attrs["password"],
+        password_confirmation: attrs["password_confirmation"]
+      })
+      |> Repo.update()
+    else
+      {:error, :invalid_password}
+    end
   end
 
   @doc """
@@ -189,8 +208,8 @@ defmodule ToDoAPI.Res do
       |> Clock.changeset(%{time: time, status: true, user: user_id})
       |> Repo.insert()
     else
-
       new_status = !last_clock.status
+
       if new_status === false do
         %Workingtime{}
         |> Workingtime.changeset(%{start: last_clock.time, end: time, user: user_id})
@@ -455,48 +474,54 @@ defmodule ToDoAPI.Res do
   def change_team(%Team{} = team) do
     Team.changeset(team, %{})
   end
-  #GUARDIAN SIGN IN TOKEN
-  #GUARDIAN SIGN IN TOKEN
-  #GUARDIAN SIGN IN TOKEN
-  #GUARDIAN SIGN IN TOKEN
+
+  # GUARDIAN SIGN IN TOKEN
+  # GUARDIAN SIGN IN TOKEN
+  # GUARDIAN SIGN IN TOKEN
+  # GUARDIAN SIGN IN TOKEN
   defp get_by_email(email) when is_binary(email) do
     Logger.info("get_by_email")
+
     case Repo.get_by(User, email: email) do
       nil ->
         Logger.info("dummy")
         dummy_checkpw()
 
         {:error, "Login error."}
+
       user ->
         Logger.info(inspect(user))
         {:ok, user}
     end
-
   end
+
   defp verify_password(password, %User{} = user) when is_binary(password) do
     Logger.info("verify_password")
+
     if checkpw(password, user.password_hash) do
       Logger.info(password)
       {:ok, user}
     else
       {:error, :invalid_password}
     end
-
   end
+
   defp email_password_auth(email, password) when is_binary(email) and is_binary(password) do
-         with {:ok, user} <- get_by_email(email),
-    do: verify_password(password, user)
+    with {:ok, user} <- get_by_email(email),
+         do: verify_password(password, user)
   end
 
   def token_sign_in(email, password) do
     case email_password_auth(email, password) do
       {:ok, user} ->
         Guardian.encode_and_sign(user)
+
       _ ->
         {:error, :unauthorized}
     end
   end
-  #GUARDIAN SIGN IN TOKEN
-  #GUARDIAN SIGN IN TOKEN
-  #GUARDIAN SIGN IN TOKEN
+
+  # GUARDIAN SIGN IN TOKEN
+  # GUARDIAN SIGN IN TOKEN
+  # GUARDIAN SIGN IN TOKEN
 end
