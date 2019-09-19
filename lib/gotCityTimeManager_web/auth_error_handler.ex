@@ -1,9 +1,9 @@
-defmodule ToDoAPI.Guardian.AuthPipeline do
-  use Guardian.Plug.Pipeline, otp_app: :MyApi,
-  module: ToDoAPI.Guardian,
-  error_handler: ToDoAPI.AuthErrorHandler
+defmodule ToDoAPI.AuthErrorHandler do
+  import Plug.Conn
 
-  plug Guardian.Plug.VerifyHeader, realm: "Bearer"
-  plug Guardian.Plug.EnsureAuthenticated
-  plug Guardian.Plug.LoadResource
+  def auth_error(conn, {type, _reason}, _opts) do
+    body = Jason.encode!(%{error: to_string(type)})
+    send_resp(conn, 401, body)
+  end
+
 end
