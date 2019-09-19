@@ -29,11 +29,12 @@ defmodule ToDoAPIWeb.Router do
     plug Guardian.AuthPipeline
   end
 
-  scope "/api/v1", ToDoAPIWeb do
+  scope "/api", ToDoAPIWeb do
     pipe_through :api
+
+    post "/sign_in", UserController, :sign_in
     resources "/users", UserController, except: [:new, :edit]
     resources "/workingtimes", WorkingtimeController, only: [:update, :delete]
-    post "/sign_in", UserController, :sign_in
 
     scope "/workingtimes" do
       get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime
@@ -47,9 +48,12 @@ defmodule ToDoAPIWeb.Router do
     end
   end
 
-  scope "/api/v2", ToDoAPIWeb do
+  scope "/api", ToDoAPIWeb do
     pipe_through [:api, :jwt_authenticated]
-
+    #Test routes auth user###########################################
     get "/my_user", UserController, :show
+    #################################################################
+    #resources "/users", UserController, except: [:new, :edit]
+
   end
 end

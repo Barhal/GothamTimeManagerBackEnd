@@ -7,7 +7,7 @@ defmodule ToDoAPI.Res.User do
     field :email, :string
     field :username, :string
     field :password_hash, :string
-    field :role, :string
+    field :role, :string, default: "employee"
     field :team, :id
     # Virtual fields
     field :password, :string, virtual: true
@@ -21,7 +21,7 @@ defmodule ToDoAPI.Res.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :password, :password_confirmation])
+    |> cast(attrs, [:username, :email, :password, :password_confirmation, :role, :team])
     |> validate_required([:username, :email, :password, :password_confirmation])
     |> unique_constraint(:username, message: "Username must be unique")
     |> validate_format(:email, @email,
@@ -32,6 +32,7 @@ defmodule ToDoAPI.Res.User do
     )
     |> validate_length(:username, min: 5, message: "At least 5 characters")
     |> validate_length(:username, max: 25, message: "Max 25 characters")
+    |> validate_inclusion(:role, ["employee", "manager", "admin"])
     |> validate_length(:password, min: 6) #Check that password length is >= 6
     |> validate_confirmation(:password) #Check that password === password_confirmation
     |> put_password_hash # Add put_password_hash to changeset pipeline
