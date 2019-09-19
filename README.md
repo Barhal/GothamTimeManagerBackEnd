@@ -19,5 +19,6 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Source: https://github.com/phoenixframework/phoenix
 
 ### Si vous windows
+  * https://github.com/riverrun/comeonin/wiki/Requirements#windows
   * cmd /K "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\vsdevcmd" -arch=x64 (visual studio 2019 + tools pour c++ installé)
 

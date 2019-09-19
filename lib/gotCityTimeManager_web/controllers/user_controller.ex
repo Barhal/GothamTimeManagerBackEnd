@@ -37,11 +37,15 @@ defmodule ToDoAPIWeb.UserController do
     end
   end
 
-  @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def show(conn, %{"id" => id}) do
-    user = Res.get_user!(id)
-    render(conn, "show.json", user: user)
-  end
+  # @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
+  # def show(conn, %{"id" => id}) do
+  #   user = Res.get_user!(id)
+  #   render(conn, "show.json", user: user)
+  # end
+  def show(conn, _params) do
+    user = Guardian.Plug.current_resource(conn)
+    conn |> render("user.json", user: user)
+ end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Res.get_user!(id)
@@ -71,7 +75,6 @@ defmodule ToDoAPIWeb.UserController do
       {:ok, token, _claims} ->
         conn |> render("jwt.json", jwt: token)
       _ ->
-        Logger.info("Error sign-in")
         {:error, :unauthorized}
     end
   end

@@ -487,11 +487,10 @@ defmodule ToDoAPI.Res do
          with {:ok, user} <- get_by_email(email),
     do: verify_password(password, user)
   end
+
   def token_sign_in(email, password) do
-    Logger.info("TokenSignInMethod")
     case email_password_auth(email, password) do
       {:ok, user} ->
-        Logger.info("TokenSignInMethod1")
         Guardian.encode_and_sign(user)
       _ ->
         {:error, :unauthorized}

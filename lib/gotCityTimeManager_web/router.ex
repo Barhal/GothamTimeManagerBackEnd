@@ -1,5 +1,6 @@
 defmodule ToDoAPIWeb.Router do
   use ToDoAPIWeb, :router
+  alias ToDoAPI.Guardian
 
   defmodule NoRouteError do
     @moduledoc """
@@ -24,6 +25,10 @@ defmodule ToDoAPIWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt_authenticated do
+    plug Guardian.AuthPipeline
+  end
+
   scope "/api/v1", ToDoAPIWeb do
     pipe_through :api
     resources "/users", UserController, except: [:new, :edit]
@@ -40,5 +45,11 @@ defmodule ToDoAPIWeb.Router do
       get "/last/:user_id", ClockController, :get_last_clock_for_user
       post "/:user_id", ClockController, :post_clock_for_user
     end
+  end
+
+  scope "/api/v2", ToDoAPIWeb do
+    pipe_through [:api, :jwt_authenticated]
+
+    get "/my_user", UserController, :show
   end
 end
