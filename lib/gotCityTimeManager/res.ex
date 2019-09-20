@@ -3,7 +3,7 @@ defmodule ToDoAPI.Res do
   The Res context.
   """
 
-  import Ecto.Query, warn: false
+  import Ecto.Query, warn: true
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   alias ToDoAPI.Repo
   alias ToDoAPI.Res.User
@@ -97,6 +97,13 @@ defmodule ToDoAPI.Res do
     else
       {:error, :invalid_password}
     end
+  end
+
+  def get_employee_from_team(team_id) do
+    User
+    # |> Ecto.Query.preload([:user])
+    |> where([u], u.team == ^team_id)
+    |> Repo.all()
   end
 
   @doc """
@@ -379,6 +386,22 @@ defmodule ToDoAPI.Res do
     |> Repo.all()
   end
 
+  def get_workingtimes_from_team(user_team, start_value, end_value) do
+    Logger.info("here")
+    # query = from w in Workingtime,
+    #   join: u in User, where: u.team == ^user_team and w.start >= ^start_value and w.end <= ^end_value
+    # workingtimes = Repo.all(query)
+    Workingtime
+    |> Ecto.Query.preload([user: :team])
+    |> where([w], w.start >= ^start_value and w.end <= ^end_value)
+    |> Repo.all()
+    # Repo.all from w in Workingtime,
+    # join: u in assoc(w, :user),
+    # join: t in assoc(u, :team),
+    # where: w.start >= ^start_value and w.end <= ^end_value and t.id == ^user_team,
+    # preload: [{:user, :team}]
+  end
+
   alias ToDoAPI.Res.Team
 
   @doc """
@@ -512,6 +535,7 @@ defmodule ToDoAPI.Res do
   end
 
   def token_sign_in(email, password) do
+    Logger.info("signin")
     case email_password_auth(email, password) do
       {:ok, user} ->
         Guardian.encode_and_sign(user)

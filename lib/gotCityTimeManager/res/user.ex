@@ -3,12 +3,15 @@ defmodule ToDoAPI.Res.User do
   import Ecto.Changeset
   import Comeonin.Bcrypt, only: [hashpwsalt: 1]
 
+  @derive {Jason.Encoder, only: [:email, :username]}
   schema "users" do
     field :email, :string
     field :username, :string
     field :password_hash, :string
     field :role, :string, default: "employee"
-    field :team, :id
+    # Association
+    belongs_to :team, ToDoAPI.Res.Team
+    has_many :workingtimes, ToDoAPI.Res.Workingtime
     # Virtual fields
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
@@ -21,7 +24,7 @@ defmodule ToDoAPI.Res.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :password, :password_confirmation, :role, :team])
+    |> cast(attrs, [:username, :email, :password, :password_confirmation, :role, :team_id])
     |> validate_required([:username, :email, :password, :password_confirmation])
     |> unique_constraint(:username, message: "Username must be unique")
     |> validate_format(:email, @email,

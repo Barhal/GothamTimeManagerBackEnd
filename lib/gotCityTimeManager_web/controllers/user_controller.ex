@@ -78,6 +78,7 @@ defmodule ToDoAPIWeb.UserController do
   #   "password": "password"
   # }
   def sign_in(conn, %{"email" => email, "password" => password}) do
+    Logger.info("signin")
     case Res.token_sign_in(email, password) do
       {:ok, token, _claims} ->
         conn |> render("jwt.json", jwt: token)
@@ -85,5 +86,10 @@ defmodule ToDoAPIWeb.UserController do
       _ ->
         {:error, :unauthorized}
     end
+  end
+  def get_list_employee_from_specific_team(conn, %{}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    users = Res.get_employee_from_team(current_user.team)
+    render(conn, "index.json", users: users)
   end
 end

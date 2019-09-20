@@ -5,7 +5,7 @@ defmodule ToDoAPI.Res.Workingtime do
   schema "workingtimes" do
     field :end, :naive_datetime
     field :start, :naive_datetime
-    field :user, :id
+    belongs_to :user, ToDoAPI.Res.User
 
     timestamps()
   end

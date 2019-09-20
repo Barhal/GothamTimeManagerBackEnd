@@ -1,6 +1,7 @@
 defmodule ToDoAPIWeb.UserView do
   use ToDoAPIWeb, :view
   alias ToDoAPIWeb.UserView
+  alias ToDoAPIWeb.TeamView
 
   def render("index.json", %{users: users}) do
     %{data: render_many(users, UserView, "user.json")}
@@ -15,9 +16,19 @@ defmodule ToDoAPIWeb.UserView do
       username: user.username,
       email: user.email,
       role: user.role,
-      team: user.team}
+      team: render_one(user.team, TeamView, "team.json")
+    }
   end
   def render("jwt.json", %{jwt: jwt}) do
     %{jwt: jwt}
   end
+
+  # use ToDoAPIWeb, :view
+  # use JaSerializer.PhoenixView
+
+  # attributes [:username]
+
+  # has_one :team,
+  #   include: false,
+  #   serializer: ToDoAPIWeb.TeamView
 end

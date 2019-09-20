@@ -5,11 +5,9 @@ defmodule ToDoAPI.Repo.Migrations.CreateWorkingtimes do
     create table(:workingtimes) do
       add :start, :naive_datetime
       add :end, :naive_datetime
-      add :user, references(:users, on_delete: :nothing)
+      add :user_id, references(:users)
 
       timestamps()
     end
-
-    create index(:workingtimes, [:user])
   end
 end

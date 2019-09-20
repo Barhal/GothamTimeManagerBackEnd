@@ -14,4 +14,8 @@ defmodule ToDoAPIWeb.TeamView do
     %{id: team.id,
       name: team.name}
   end
+  # use ToDoAPIWeb, :view
+  # use JaSerializer.PhoenixView
+
+  # attributes [:name]
 end

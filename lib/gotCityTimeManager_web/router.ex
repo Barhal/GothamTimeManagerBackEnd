@@ -25,6 +25,11 @@ defmodule ToDoAPIWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # pipeline :json_api do
+  #   plug :accepts, ["json-api"]
+  #   plug JaSerializer.Deserializer
+  # end
+
   pipeline :jwt_authenticated do
     plug Guardian.AuthPipeline
   end
@@ -38,9 +43,10 @@ defmodule ToDoAPIWeb.Router do
     plug ToDoAPIWeb.Plug.EnsureAdmin
   end
 
-  scope "/login", ToDoAPIWeb do
+  scope "/log", ToDoAPIWeb do
     pipe_through :api
     # Guest route
+    resources "/users", UserController, except: [:new, :edit]
     post "/sign_in", UserController, :sign_in
   end
 
@@ -55,8 +61,13 @@ defmodule ToDoAPIWeb.Router do
     scope "/man" do
       pipe_through [:ismanager]
 
+      scope "/users" do
+        get "/myteam", UserController, :get_list_employee_from_specific_team
+        get "/workingtimes", WorkingtimeController, :get_team_workingtime
+      end
+
       scope "/workingtimes" do
-        get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime
+        #get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime
       end
     end
 
@@ -64,7 +75,7 @@ defmodule ToDoAPIWeb.Router do
       pipe_through [:isadmin]
 
       scope "/clocks" do
-        get "/:user_id", ClockController, :get_clocks_for_user
+        #get "/:user_id", ClockController, :get_clocks_for_user
       end
     end
   end

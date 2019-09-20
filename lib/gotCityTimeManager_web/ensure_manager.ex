@@ -20,7 +20,8 @@ defmodule ToDoAPIWeb.Plug.EnsureManager do
 
   defp check_manager(conn, _opts) do
     current_user = Guardian.Plug.current_resource(conn)
-    case Repo.get_by(User, %{id: current_user.id, role: "manager" || "admin"}) do
+    Logger.info("checkmanager")
+    case Repo.get_by(User, %{id: current_user.id, role: "manager"}) do
       nil -> halt_plug(conn)
       user -> assign(conn, :user, user)
     end

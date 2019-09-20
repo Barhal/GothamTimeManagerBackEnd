@@ -4,6 +4,7 @@ defmodule ToDoAPI.Res.Team do
 
   schema "teams" do
     field :name, :string
+    has_many :user, ToDoAPI.Res.User
 
     timestamps()
   end

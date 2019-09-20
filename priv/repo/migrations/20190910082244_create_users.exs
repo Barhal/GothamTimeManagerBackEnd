@@ -7,7 +7,7 @@ defmodule ToDoAPI.Repo.Migrations.CreateUsers do
       add :email, :string, null: false
       add :password_hash, :string, null: false
       add :role, :string
-      add :team, references(:teams, on_delete: :nothing)
+      add :team_id, references(:teams)
 
       timestamps()
     end
