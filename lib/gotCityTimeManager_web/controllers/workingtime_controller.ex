@@ -83,8 +83,10 @@ defmodule ToDoAPIWeb.WorkingtimeController do
   def get_team_workingtime(conn, %{"start" => start_value, "end" => end_value}) do
     Logger.info("get_team_workingtime")
     current_user = Guardian.Plug.current_resource(conn)
-    workingtimes = Res.get_workingtimes_from_team(current_user.id, start_value, end_value)
+    Logger.info(inspect(current_user, pretty: true))
+    workingtimes = Res.get_workingtimes_from_team(current_user.team_id, start_value, end_value)
     Logger.info(inspect(workingtimes, pretty: true))
-    render(conn, "index.json", workingtimes: workingtimes)
+    #render(conn, "index.json", workingtimes: workingtimes)
+    render(conn, "index.json-api", data: workingtimes, opts: [include: "user"])
   end
 end

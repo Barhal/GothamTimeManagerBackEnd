@@ -387,19 +387,29 @@ defmodule ToDoAPI.Res do
   end
 
   def get_workingtimes_from_team(user_team, start_value, end_value) do
-    Logger.info("here")
     # query = from w in Workingtime,
     #   join: u in User, where: u.team == ^user_team and w.start >= ^start_value and w.end <= ^end_value
     # workingtimes = Repo.all(query)
-    Workingtime
-    |> Ecto.Query.preload([user: :team])
-    |> where([w], w.start >= ^start_value and w.end <= ^end_value)
-    |> Repo.all()
+
+    # Workingtime
+    # |> Ecto.Query.preload([user: :team])
+    # |> where([w], w.start >= ^start_value and w.end <= ^end_value)
+    # |> Repo.all()
+
     # Repo.all from w in Workingtime,
     # join: u in assoc(w, :user),
     # join: t in assoc(u, :team),
     # where: w.start >= ^start_value and w.end <= ^end_value and t.id == ^user_team,
     # preload: [{:user, :team}]
+    Workingtime
+    |> where([wt], wt.start >= ^start_value and wt.end <= ^end_value)
+    |> join(:left, [wt], user in assoc(wt, :user))
+    |> where([wt, user], user.team_id == ^user_team)
+    |> join(:left, [wt, user], team in assoc(user, :team))
+    |> preload([{:user, :team}])
+    #|> where([team], team.id == ^user_team)
+    #|> preload([workingtime, user, team], [user: {user, team: user}])
+    |> Repo.all()
   end
 
   alias ToDoAPI.Res.Team

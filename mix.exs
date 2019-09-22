@@ -45,7 +45,8 @@ defmodule ToDoAPI.MixProject do
       {:comeonin, "~> 4.0"},
       {:guardian, "~> 1.0"},
       {:ja_serializer, github: "vt-elixir/ja_serializer"},
-      {:bcrypt_elixir, "~> 1.0"}
+      {:bcrypt_elixir, "~> 1.0"},
+      {:poison, "~> 3.1"}
     ]
   end
 

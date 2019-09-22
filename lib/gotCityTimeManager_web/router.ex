@@ -21,14 +21,14 @@ defmodule ToDoAPIWeb.Router do
     end
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
-  # pipeline :json_api do
-  #   plug :accepts, ["json-api"]
-  #   plug JaSerializer.Deserializer
+  # pipeline :api do
+  #   plug :accepts, ["json"]
   # end
+
+  pipeline :json_api do
+    plug :accepts, ["json-api"]
+    plug JaSerializer.Deserializer
+  end
 
   pipeline :jwt_authenticated do
     plug Guardian.AuthPipeline
@@ -44,14 +44,14 @@ defmodule ToDoAPIWeb.Router do
   end
 
   scope "/log", ToDoAPIWeb do
-    pipe_through :api
+    pipe_through :json_api
     # Guest route
     resources "/users", UserController, except: [:new, :edit]
     post "/sign_in", UserController, :sign_in
   end
 
   scope "/api", ToDoAPIWeb do
-    pipe_through [:api, :jwt_authenticated]
+    pipe_through [:json_api, :jwt_authenticated]
     # Employee route
     get "/me", UserController, :show_guardian
     put "/users", UserController, :update_current_user
