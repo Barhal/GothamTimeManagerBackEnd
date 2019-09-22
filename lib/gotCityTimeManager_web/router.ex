@@ -66,6 +66,7 @@ defmodule ToDoAPIWeb.Router do
       get "/workingtimes", WorkingtimeController, :get_team_workingtime
       post "/workingtimes/:user_id", WorkingtimeController, :create_workingtimes_manager
       put "/workingtimes/:workingtime_id", WorkingtimeController, :update_workingtimes_manager
+      delete "workingtimes/:workingtime_id", WorkingtimeController, :delete_workingtimes_manager
     end
 
     scope "/adm" do

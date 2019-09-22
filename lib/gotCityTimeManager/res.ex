@@ -305,6 +305,19 @@ defmodule ToDoAPI.Res do
   """
   def get_workingtime!(id), do: Repo.get!(Workingtime, id)
 
+  def get_workingtime_and_user(workingtime_id) do
+    Workingtime
+    |> where([wt], wt.id == ^workingtime_id)
+    |> preload([:user])
+    |> Repo.one()
+  end
+  # Workingtime
+  #   |> where([wt], wt.start >= ^start_value and wt.end <= ^end_value)
+  #   |> join(:left, [wt], user in assoc(wt, :user))
+  #   |> where([wt, user], user.team_id == ^user_team)
+  #   |> join(:left, [wt, user], team in assoc(user, :team))
+  #   |> preload([{:user, :team}])
+
   def get_workingtime_userid_workingtime_id(user_id, workingtime_id),
     do: Repo.get_by(Workingtime, user: user_id, id: workingtime_id)
 
