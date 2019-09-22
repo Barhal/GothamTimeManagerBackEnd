@@ -114,8 +114,23 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     end
   end
 
-  def update_workingtimes_manager(conn, %{"params" => params}) do
+  def update_workingtimes_manager(conn, %{"workingtime_id" => workingtime_id, "workingtime" => workingtime_params}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    user = Res.get_user!(workingtime_params["user"])
+    # Check if the user is in the team of the manager
+    if current_user.team_id === user.team_id do
+      workingtime = Res.get_workingtime!(workingtime_id)
 
+      with {:ok, %Workingtime{} = workingtime} <-
+             Res.update_workingtime(workingtime, workingtime_params) do
+        render(conn, "show.json-api", workingtime: workingtime)
+      end
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> put_view(ToDoAPIWeb.ErrorView)
+      |> render("405.json")
+    end
   end
 end
 
