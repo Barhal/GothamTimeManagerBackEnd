@@ -13,7 +13,8 @@ defmodule ToDoAPI.Res.Workingtime do
   @doc false
   def changeset(workingtime, attrs) do
     workingtime
-    |> cast(attrs, [:start, :end, :user])
-    |> validate_required([:start, :end, :user])
+    |> cast(attrs, [:start, :end, :user_id])
+    |> validate_required([:start, :end, :user_id])
+    |> assoc_constraint(:user)
   end
 end

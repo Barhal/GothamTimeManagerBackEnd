@@ -8,7 +8,7 @@ defmodule ToDoAPIWeb.TeamController do
 
   def index(conn, _params) do
     teams = Res.list_teams()
-    render(conn, "index.json", teams: teams)
+    render(conn, "index.json-api", teams: teams)
   end
 
   def create(conn, %{"team" => team_params}) do
@@ -16,20 +16,20 @@ defmodule ToDoAPIWeb.TeamController do
       conn
       |> put_status(:created)
       #|> put_resp_header("location", Routes.team_path(conn, :show, team))
-      |> render("show.json", team: team)
+      |> render("show.json-api", team: team)
     end
   end
 
   def show(conn, %{"id" => id}) do
     team = Res.get_team!(id)
-    render(conn, "show.json", team: team)
+    render(conn, "show.json-api", team: team)
   end
 
   def update(conn, %{"id" => id, "team" => team_params}) do
     team = Res.get_team!(id)
 
     with {:ok, %Team{} = team} <- Res.update_team(team, team_params) do
-      render(conn, "show.json", team: team)
+      render(conn, "show.json-api", team: team)
     end
   end
 

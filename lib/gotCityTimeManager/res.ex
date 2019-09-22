@@ -328,7 +328,7 @@ defmodule ToDoAPI.Res do
 
   def create_workingtime_start_end_user(start_value, end_value, user_id) do
     %Workingtime{}
-    |> Workingtime.changeset(%{start: start_value, end: end_value, user: user_id})
+    |> Workingtime.changeset(%{start: start_value, end: end_value, user_id: user_id})
     |> Repo.insert()
   end
 

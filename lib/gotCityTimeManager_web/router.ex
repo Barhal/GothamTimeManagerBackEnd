@@ -38,6 +38,7 @@ defmodule ToDoAPIWeb.Router do
     plug Guardian.AuthPipeline
     plug ToDoAPIWeb.Plug.EnsureManager
   end
+
   pipeline :isadmin do
     plug Guardian.AuthPipeline
     plug ToDoAPIWeb.Plug.EnsureAdmin
@@ -60,22 +61,17 @@ defmodule ToDoAPIWeb.Router do
 
     scope "/man" do
       pipe_through [:ismanager]
-
-      scope "/users" do
-        get "/myteam", UserController, :get_list_employee_from_specific_team
-        get "/workingtimes", WorkingtimeController, :get_team_workingtime
-      end
-
-      scope "/workingtimes" do
-        #get "/:user_id/:workingtime_id", WorkingtimeController, :get_one_workingtime
-      end
+      # Manager route
+      get "/myteam", UserController, :get_list_employee_from_specific_team
+      get "/workingtimes", WorkingtimeController, :get_team_workingtime
+      post "/workingtimes/:user_id", WorkingtimeController, :create_workingtimes_manager
     end
 
     scope "/adm" do
       pipe_through [:isadmin]
 
       scope "/clocks" do
-        #get "/:user_id", ClockController, :get_clocks_for_user
+        # get "/:user_id", ClockController, :get_clocks_for_user
       end
     end
   end
