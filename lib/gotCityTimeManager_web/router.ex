@@ -64,10 +64,11 @@ defmodule ToDoAPIWeb.Router do
       pipe_through [:ismanager]
       # Manager route
       get "/myteam", UserController, :get_list_employee_from_specific_team
-      get "/workingtimes", WorkingtimeController, :get_team_workingtime
+      get "/workingtimes", WorkingtimeController, :get_team_workingtimes
       post "/workingtimes/:user_id", WorkingtimeController, :create_workingtimes_manager
       put "/workingtimes/:workingtime_id", WorkingtimeController, :update_workingtimes_manager
       delete "/workingtimes/:workingtime_id", WorkingtimeController, :delete_workingtimes_manager
+      get "/clocks", ClockController, :get_team_clocks
     end
 
     scope "/adm" do

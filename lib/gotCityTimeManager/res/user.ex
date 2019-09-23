@@ -12,6 +12,7 @@ defmodule ToDoAPI.Res.User do
     # Association
     belongs_to :team, ToDoAPI.Res.Team
     has_many :workingtimes, ToDoAPI.Res.Workingtime
+    has_many :clocks, ToDoAPI.Res.Clock
     # Virtual fields
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true

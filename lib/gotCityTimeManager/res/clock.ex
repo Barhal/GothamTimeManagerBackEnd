@@ -5,7 +5,7 @@ defmodule ToDoAPI.Res.Clock do
   schema "clocks" do
     field :status, :boolean, default: false
     field :time, :naive_datetime
-    field :user, :id
+    belongs_to :user, ToDoAPI.Res.User
 
     timestamps()
   end
@@ -13,7 +13,7 @@ defmodule ToDoAPI.Res.Clock do
   @doc false
   def changeset(clock, attrs) do
     clock
-    |> cast(attrs, [:time, :status, :user])
-    |> validate_required([:time, :status, :user])
+    |> cast(attrs, [:time, :status, :user_id])
+    |> validate_required([:time, :status, :user_id])
   end
 end

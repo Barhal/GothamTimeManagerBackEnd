@@ -2,7 +2,7 @@
 alias ToDoAPI.Repo
 alias ToDoAPI.Res.Clock
 
-#UserOne - DayOne 2019-02-21
+#user_idOne - DayOne 2019-02-21
 {_, time1_1_1} = NaiveDateTime.from_iso8601("2019-02-21 06:05:00")
 {_, time1_2_1} = NaiveDateTime.from_iso8601("2019-02-21 12:10:00")
 {_, time1_3_1} = NaiveDateTime.from_iso8601("2019-02-21 12:58:00")
@@ -12,34 +12,34 @@ alias ToDoAPI.Res.Clock
 Repo.insert! %Clock {
   time: time1_1_1,
   status: true,
-  user: 1
+  user_id: 1
 }
 Repo.insert! %Clock {
   time: time1_2_1,
   status: false,
-  user: 1
+  user_id: 1
 }
 Repo.insert! %Clock {
   time: time1_3_1,
   status: true,
-  user: 1
+  user_id: 1
 }
 Repo.insert! %Clock {
   time: time1_4_1,
   status: false,
-  user: 1
+  user_id: 1
 }
 Repo.insert! %Clock {
   time: time1_5_1,
   status: true,
-  user: 1
+  user_id: 1
 }
 Repo.insert! %Clock {
   time: time1_6_1,
   status: false,
-  user: 1
+  user_id: 1
 }
-#UserOne - DayTwo 2019-02-22
+#user_idOne - DayTwo 2019-02-22
 {_, time1_1_2} = NaiveDateTime.from_iso8601("2019-02-22 05:51:00")
 {_, time1_2_2} = NaiveDateTime.from_iso8601("2019-02-22 12:08:00")
 {_, time1_3_2} = NaiveDateTime.from_iso8601("2019-02-22 13:05:00")
@@ -49,34 +49,34 @@ Repo.insert! %Clock {
 Repo.insert! %Clock {
   time: time1_1_2,
   status: true,
-  user: 1
+  user_id: 1
 }
 Repo.insert! %Clock {
   time: time1_2_2,
   status: false,
-  user: 1
+  user_id: 1
 }
 Repo.insert! %Clock {
   time: time1_3_2,
   status: true,
-  user: 1
+  user_id: 1
 }
 Repo.insert! %Clock {
   time: time1_4_2,
   status: false,
-  user: 1
+  user_id: 1
 }
 Repo.insert! %Clock {
   time: time1_5_2,
   status: true,
-  user: 1
+  user_id: 1
 }
 Repo.insert! %Clock {
   time: time1_6_2,
   status: false,
-  user: 1
+  user_id: 1
 }
-#UserTwo - DayOne 2019-02-21
+#user_idTwo - DayOne 2019-02-21
 {_, time2_1_1} = NaiveDateTime.from_iso8601("2019-02-21 08:25:00")
 {_, time2_2_1} = NaiveDateTime.from_iso8601("2019-02-21 13:12:00")
 {_, time2_3_1} = NaiveDateTime.from_iso8601("2019-02-21 14:25:00")
@@ -86,34 +86,34 @@ Repo.insert! %Clock {
 Repo.insert! %Clock {
   time: time2_1_1,
   status: true,
-  user: 2
+  user_id: 2
 }
 Repo.insert! %Clock {
   time: time2_2_1,
   status: false,
-  user: 2
+  user_id: 2
 }
 Repo.insert! %Clock {
   time: time2_3_1,
   status: true,
-  user: 2
+  user_id: 2
 }
 Repo.insert! %Clock {
   time: time2_4_1,
   status: false,
-  user: 2
+  user_id: 2
 }
 Repo.insert! %Clock {
   time: time2_5_1,
   status: true,
-  user: 2
+  user_id: 2
 }
 Repo.insert! %Clock {
   time: time2_6_1,
   status: false,
-  user: 2
+  user_id: 2
 }
-#UserTwo - DayTwo 2019-02-22
+#user_idTwo - DayTwo 2019-02-22
 {_, time2_1_2} = NaiveDateTime.from_iso8601("2019-02-22 08:42:00")
 {_, time2_2_2} = NaiveDateTime.from_iso8601("2019-02-22 13:26:00")
 {_, time2_3_2} = NaiveDateTime.from_iso8601("2019-02-22 14:32:00")
@@ -123,30 +123,30 @@ Repo.insert! %Clock {
 Repo.insert! %Clock {
   time: time2_1_2,
   status: true,
-  user: 2
+  user_id: 2
 }
 Repo.insert! %Clock {
   time: time2_2_2,
   status: false,
-  user: 2
+  user_id: 2
 }
 Repo.insert! %Clock {
   time: time2_3_2,
   status: true,
-  user: 2
+  user_id: 2
 }
 Repo.insert! %Clock {
   time: time2_4_2,
   status: false,
-  user: 2
+  user_id: 2
 }
 Repo.insert! %Clock {
   time: time2_5_2,
   status: true,
-  user: 2
+  user_id: 2
 }
 Repo.insert! %Clock {
   time: time2_6_2,
   status: false,
-  user: 2
+  user_id: 2
 }

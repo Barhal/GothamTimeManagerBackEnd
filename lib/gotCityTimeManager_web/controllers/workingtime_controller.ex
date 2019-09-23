@@ -81,7 +81,7 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     end
   end
 
-  def get_team_workingtime(conn, %{"start" => start_value, "end" => end_value}) do
+  def get_team_workingtimes(conn, %{"start" => start_value, "end" => end_value}) do
     Logger.info("get_team_workingtime")
     current_user = Guardian.Plug.current_resource(conn)
     Logger.info(inspect(current_user, pretty: true))
