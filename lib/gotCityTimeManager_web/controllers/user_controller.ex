@@ -46,7 +46,7 @@ defmodule ToDoAPIWeb.UserController do
 
   def show_guardian(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
-    conn |> render("user.json-api", user: user)
+    conn |> render("show.json-api", user: user)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do

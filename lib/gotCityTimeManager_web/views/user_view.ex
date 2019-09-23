@@ -29,6 +29,6 @@ defmodule ToDoAPIWeb.UserView do
   attributes [:username, :email, :role]
 
   has_one :team,
-    include: true,
+    include: false,
     serializer: ToDoAPIWeb.TeamView
 end
