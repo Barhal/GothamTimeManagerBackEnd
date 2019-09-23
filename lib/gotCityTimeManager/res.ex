@@ -101,11 +101,20 @@ defmodule ToDoAPI.Res do
 
   def get_employee_from_team(team_id) do
     User
-    # |> Ecto.Query.preload([:user])
-    |> where([u], u.team == ^team_id)
+    # |> Ecto.Query.preload([:team])
+    |> where([u], u.team_id == ^team_id)
+    |> preload([:team])
+    # |> where([u], u.team_id == ^team_id)
+    # |> join(:left, [u], team in assoc(u, :team))
+    # |> where([u], u.team_id == ^team_id)
     |> Repo.all()
   end
-
+  # Workingtime
+  # |> where([wt], wt.start >= ^start_value and wt.end <= ^end_value)
+  # |> join(:left, [wt], user in assoc(wt, :user))
+  # |> where([wt, user], user.team_id == ^user_team)
+  # |> join(:left, [wt, user], team in assoc(user, :team))
+  # |> preload([{:user, :team}])
   @doc """
   Deletes a User.
 

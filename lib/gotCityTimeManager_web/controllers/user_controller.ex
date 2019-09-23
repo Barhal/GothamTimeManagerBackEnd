@@ -89,7 +89,8 @@ defmodule ToDoAPIWeb.UserController do
   end
   def get_list_employee_from_specific_team(conn, %{}) do
     current_user = Guardian.Plug.current_resource(conn)
-    users = Res.get_employee_from_team(current_user.team)
+    Logger.info(inspect(current_user, pretty: true))
+    users = Res.get_employee_from_team(current_user.team_id)
     render(conn, "index.json-api", data: users)
   end
 end
