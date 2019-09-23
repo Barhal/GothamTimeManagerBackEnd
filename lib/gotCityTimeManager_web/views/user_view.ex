@@ -19,9 +19,9 @@ defmodule ToDoAPIWeb.UserView do
   #     team: render_one(user.team, TeamView, "team.json")
   #   }
   # end
-  # def render("jwt.json", %{jwt: jwt}) do
-  #   %{jwt: jwt}
-  # end
+  def render("jwt.json-api", %{jwt: jwt}) do
+    %{jwt: jwt}
+  end
 
   use ToDoAPIWeb, :view
   use JaSerializer.PhoenixView

@@ -40,11 +40,12 @@ defmodule ToDoAPIWeb.Endpoint do
     key: "_gotCityTimeManager_key",
     signing_salt: "dM2JridL"
 
-  plug Corsica,
-    #origins: "http://localhost:8080",
-    allow_headers: ["access-control-allow-headers", "access-control-allow-origin", "content-type"],
-    origins: "*",
-    log: [rejected: :error, invalid: :warn, accepted: :debug]
+  # plug Corsica,
+  #   #origins: "http://localhost:8080",
+  #   allow_headers: ["access-control-allow-headers", "access-control-allow-origin", "content-type"],
+  #   origins: "*",
+  #   log: [rejected: :error, invalid: :warn, accepted: :debug]
+  plug CORSPlug
 
   plug ToDoAPIWeb.Router
 end

@@ -46,6 +46,7 @@ defmodule ToDoAPI.MixProject do
       {:guardian, "~> 1.0"},
       {:ja_serializer, github: "vt-elixir/ja_serializer"},
       {:bcrypt_elixir, "~> 1.0"},
+      {:cors_plug, "~> 2.0"},
       {:poison, "~> 3.1"}
     ]
   end
