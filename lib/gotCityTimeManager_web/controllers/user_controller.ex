@@ -87,9 +87,8 @@ defmodule ToDoAPIWeb.UserController do
         {:error, :unauthorized}
     end
   end
-  def get_list_employee_from_specific_team(conn, %{}) do
+  def get_list_employee_from_manager(conn, %{}) do
     current_user = Guardian.Plug.current_resource(conn)
-    Logger.info(inspect(current_user, pretty: true))
     users = Res.get_employee_from_team(current_user.team_id)
     render(conn, "index.json-api", data: users)
   end

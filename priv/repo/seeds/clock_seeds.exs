@@ -150,3 +150,77 @@ Repo.insert! %Clock {
   status: false,
   user_id: 2
 }
+#user_idThree - DayOne 2019-02-21
+{_, time2_1_1} = NaiveDateTime.from_iso8601("2019-02-21 08:25:00")
+{_, time2_2_1} = NaiveDateTime.from_iso8601("2019-02-21 13:12:00")
+{_, time2_3_1} = NaiveDateTime.from_iso8601("2019-02-21 14:25:00")
+{_, time2_4_1} = NaiveDateTime.from_iso8601("2019-02-21 18:05:00")
+{_, time2_5_1} = NaiveDateTime.from_iso8601("2019-02-21 18:18:00")
+{_, time2_6_1} = NaiveDateTime.from_iso8601("2019-02-21 19:45:00")
+Repo.insert! %Clock {
+  time: time2_1_1,
+  status: true,
+  user_id: 3
+}
+Repo.insert! %Clock {
+  time: time2_2_1,
+  status: false,
+  user_id: 3
+}
+Repo.insert! %Clock {
+  time: time2_3_1,
+  status: true,
+  user_id: 3
+}
+Repo.insert! %Clock {
+  time: time2_4_1,
+  status: false,
+  user_id: 3
+}
+Repo.insert! %Clock {
+  time: time2_5_1,
+  status: true,
+  user_id: 3
+}
+Repo.insert! %Clock {
+  time: time2_6_1,
+  status: false,
+  user_id: 3
+}
+#user_idThree - DayTwo 2019-02-22
+{_, time2_1_2} = NaiveDateTime.from_iso8601("2019-02-22 08:42:00")
+{_, time2_2_2} = NaiveDateTime.from_iso8601("2019-02-22 13:26:00")
+{_, time2_3_2} = NaiveDateTime.from_iso8601("2019-02-22 14:32:00")
+{_, time2_4_2} = NaiveDateTime.from_iso8601("2019-02-22 17:56:58")
+{_, time2_5_2} = NaiveDateTime.from_iso8601("2019-02-22 18:13:34")
+{_, time2_6_2} = NaiveDateTime.from_iso8601("2019-02-22 19:52:00")
+Repo.insert! %Clock {
+  time: time2_1_2,
+  status: true,
+  user_id: 3
+}
+Repo.insert! %Clock {
+  time: time2_2_2,
+  status: false,
+  user_id: 3
+}
+Repo.insert! %Clock {
+  time: time2_3_2,
+  status: true,
+  user_id: 3
+}
+Repo.insert! %Clock {
+  time: time2_4_2,
+  status: false,
+  user_id: 3
+}
+Repo.insert! %Clock {
+  time: time2_5_2,
+  status: true,
+  user_id: 3
+}
+Repo.insert! %Clock {
+  time: time2_6_2,
+  status: false,
+  user_id: 3
+}

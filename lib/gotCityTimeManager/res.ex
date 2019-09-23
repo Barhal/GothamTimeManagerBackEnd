@@ -8,6 +8,7 @@ defmodule ToDoAPI.Res do
   alias ToDoAPI.Repo
   alias ToDoAPI.Res.User
   alias ToDoAPI.Res.Workingtime
+  alias ToDoAPI.Res.Team
   alias ToDoAPI.Guardian
   require Logger
 
@@ -105,6 +106,7 @@ defmodule ToDoAPI.Res do
     |> preload([:team])
     |> Repo.all()
   end
+
   @doc """
   Deletes a User.
 
@@ -228,6 +230,16 @@ defmodule ToDoAPI.Res do
     end
   end
 
+  def get_clocks_from_team(team_id) do
+    Clock
+    |> join(:left, [c], user in assoc(c, :user))
+    |> where([c, user], user.team_id == ^team_id)
+    |> join(:left, [c, user], team in assoc(user, :team))
+    |> distinct([c], c.user_id)
+    |> order_by([c], [desc: c.time])
+    |> preload([{:user, :team}])
+    |> Repo.all()
+  end
   @doc """
   Updates a clock.
 
@@ -310,6 +322,7 @@ defmodule ToDoAPI.Res do
     |> preload([:user])
     |> Repo.one()
   end
+
   # Workingtime
   #   |> where([wt], wt.start >= ^start_value and wt.end <= ^end_value)
   #   |> join(:left, [wt], user in assoc(wt, :user))
@@ -420,8 +433,8 @@ defmodule ToDoAPI.Res do
     |> where([wt, user], user.team_id == ^user_team)
     |> join(:left, [wt, user], team in assoc(user, :team))
     |> preload([{:user, :team}])
-    #|> where([team], team.id == ^user_team)
-    #|> preload([workingtime, user, team], [user: {user, team: user}])
+    # |> where([team], team.id == ^user_team)
+    # |> preload([workingtime, user, team], [user: {user, team: user}])
     |> Repo.all()
   end
 
@@ -559,6 +572,7 @@ defmodule ToDoAPI.Res do
 
   def token_sign_in(email, password) do
     Logger.info("signin")
+
     case email_password_auth(email, password) do
       {:ok, user} ->
         Guardian.encode_and_sign(user)

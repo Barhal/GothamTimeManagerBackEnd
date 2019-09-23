@@ -63,8 +63,9 @@ defmodule ToDoAPIWeb.Router do
     scope "/man" do
       pipe_through [:ismanager]
       # Manager route
-      get "/myteam", UserController, :get_list_employee_from_specific_team
+      get "/myteam", UserController, :get_list_employee_from_manager
       get "/workingtimes", WorkingtimeController, :get_team_workingtimes
+      get "/workingtimes/:user_id", WorkingtimeController, :get_workingtimes_specific_user_in_manager_team
       post "/workingtimes/:user_id", WorkingtimeController, :create_workingtimes_manager
       put "/workingtimes/:workingtime_id", WorkingtimeController, :update_workingtimes_manager
       delete "/workingtimes/:workingtime_id", WorkingtimeController, :delete_workingtimes_manager
@@ -73,7 +74,7 @@ defmodule ToDoAPIWeb.Router do
 
     scope "/adm" do
       pipe_through [:isadmin]
-
+      get "/workingtimes/:user_id", WorkingtimeController, :get_workingtimes_specific_user
       scope "/clocks" do
         # get "/:user_id", ClockController, :get_clocks_for_user
       end

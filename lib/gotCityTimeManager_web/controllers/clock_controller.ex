@@ -73,4 +73,12 @@ defmodule ToDoAPIWeb.ClockController do
       |> render("show.json", clock: clock)
     end
   end
+
+  def get_team_clocks(conn, %{}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    clocks = Res.get_clocks_from_team(current_user.team_id)
+    # Logger.info(inspect(clocks, pretty: true))
+    Logger.info("here")
+    render(conn, "index.json-api", data: clocks)
+  end
 end

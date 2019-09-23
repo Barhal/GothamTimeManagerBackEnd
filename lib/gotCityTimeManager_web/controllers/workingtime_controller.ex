@@ -62,8 +62,30 @@ defmodule ToDoAPIWeb.WorkingtimeController do
   # http://localhost:4000/api/workingtimes?start=1991-02-21%2009%3A15%3A45&end=2025-02-21%2023%3A30%3A45
   def get_workingtime_current_user(conn, %{"start" => start_value, "end" => end_value}) do
     current_user = Guardian.Plug.current_resource(conn)
+    Logger.info(inspect(current_user, pretty: true))
     workingtimes = Res.get_multiple_workingtimes(current_user.id, start_value, end_value)
     render(conn, "index.json-api", data: workingtimes)
+  end
+
+  def get_workingtimes_specific_user(conn, %{"user_id" => user_id, "start" => start_value, "end" => end_value}) do
+    workingtimes = Res.get_multiple_workingtimes(user_id, start_value, end_value)
+    render(conn, "index.json-api", data: workingtimes)
+  end
+
+  def get_workingtimes_specific_user_in_manager_team(conn, %{"user_id" => user_id, "start" => start_value, "end" => end_value}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    target_user = Res.get_user!(user_id)
+    Logger.info(inspect(current_user, pretty: true))
+    Logger.info(inspect(target_user, pretty: true))
+    if current_user.team_id == target_user.team_id do
+      workingtimes = Res.get_multiple_workingtimes(user_id, start_value, end_value)
+      render(conn, "index.json-api", data: workingtimes)
+    else
+      conn
+        |> put_status(:unauthorized)
+        |> put_view(ToDoAPIWeb.ErrorView)
+        |> render("401.json")
+    end
   end
 
   # http://localhost:4000/api/workingtimes/1
