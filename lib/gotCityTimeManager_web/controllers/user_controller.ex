@@ -16,7 +16,7 @@ defmodule ToDoAPIWeb.UserController do
   def index(conn, %{"email" => email, "username" => username}) do
     user = Res.get_user_email_username(email, username)
     Logger.info(inspect(user, pretty: true))
-    render(conn, "show.json-api", user: user)
+    render(conn, "show.json-api", data: user)
   end
 
   # Fonction qui recevra toutes les URL http://localhost:4000/api/users blablabla (donc users sans /)
@@ -34,33 +34,33 @@ defmodule ToDoAPIWeb.UserController do
       conn
       |> put_status(:created)
       # |> put_resp_header("location", Routes.user_path(conn, :show, user))
-      |> render("show.json-api", user: user)
+      |> render("show.json-api", data: user)
     end
   end
 
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
     user = Res.get_user!(id)
-    render(conn, "show.json-api", user: user)
+    render(conn, "show.json-api", data: user)
   end
 
   def show_guardian(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
-    conn |> render("show.json-api", user: user)
+    conn |> render("show.json-api", data: user)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Res.get_user!(id)
 
     with {:ok, %User{} = user} <- Res.update_user(user, user_params) do
-      render(conn, "show.json-api", user: user)
+      render(conn, "show.json-api", data: user)
     end
   end
   def update_current_user(conn, %{"user" => user_params}) do
     current_user = Guardian.Plug.current_resource(conn)
     user = Res.get_user!(current_user.id)
     with {:ok, %User{} = user} <- Res.update_current_user(user, user_params) do
-      render(conn, "show.json-api", user: user)
+      render(conn, "show.json-api", data: user)
     end
   end
 
@@ -90,6 +90,6 @@ defmodule ToDoAPIWeb.UserController do
   def get_list_employee_from_specific_team(conn, %{}) do
     current_user = Guardian.Plug.current_resource(conn)
     users = Res.get_employee_from_team(current_user.team)
-    render(conn, "index.json-api", users: users)
+    render(conn, "index.json-api", data: users)
   end
 end

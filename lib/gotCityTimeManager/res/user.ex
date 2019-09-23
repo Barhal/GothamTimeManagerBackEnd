@@ -39,6 +39,7 @@ defmodule ToDoAPI.Res.User do
     |> validate_length(:password, min: 6) #Check that password length is >= 6
     |> validate_confirmation(:password) #Check that password === password_confirmation
     |> put_password_hash # Add put_password_hash to changeset pipeline
+    |> assoc_constraint(:team)
   end
 
   defp put_password_hash(changeset) do
