@@ -168,7 +168,16 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     end
   end
 
-  def delete_workingtimes_manager(conn, %{"workingtime_id" => workingtime_id}) do
+  def update_workingtimes_from_admin(conn, %{"workingtime_id" => workingtime_id}) do
+    workingtime = Res.get_workingtime!(workingtime_id)
+
+    with {:ok, %Workingtime{} = workingtime} <-
+           Res.update_workingtime(workingtime, workingtime_params) do
+      render(conn, "show.json-api", data: workingtime)
+    end
+  end
+
+  def delete_workingtimes_from_manager(conn, %{"workingtime_id" => workingtime_id}) do
     current_user = Guardian.Plug.current_resource(conn)
     workingtime = Res.get_workingtime_and_user(workingtime_id)
     # Logger.info(inspect(workingtime.user_id, pretty: true))
@@ -183,6 +192,14 @@ defmodule ToDoAPIWeb.WorkingtimeController do
       |> put_status(:unauthorized)
       |> put_view(ToDoAPIWeb.ErrorView)
       |> render("405.json")
+    end
+  end
+
+  def delete_workingtimes_from_admin(conn, %{"workingtime_id" => workingtime_id}) do
+    workingtime = Res.get_workingtime_and_user(workingtime_id)
+
+    with {:ok, %Workingtime{}} <- Res.delete_workingtime(workingtime) do
+      send_resp(conn, :no_content, "")
     end
   end
 end

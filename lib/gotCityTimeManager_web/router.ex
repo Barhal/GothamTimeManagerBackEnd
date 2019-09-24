@@ -67,8 +67,8 @@ defmodule ToDoAPIWeb.Router do
       get "/workingtimes", WorkingtimeController, :get_team_workingtimes
       get "/workingtimes/:user_id", WorkingtimeController, :get_workingtimes_specific_user_in_manager_team
       post "/workingtimes/:user_id", WorkingtimeController, :create_workingtimes_from_manager
-      put "/workingtimes/:workingtime_id", WorkingtimeController, :update_workingtimes_manager
-      delete "/workingtimes/:workingtime_id", WorkingtimeController, :delete_workingtimes_manager
+      put "/workingtimes/:workingtime_id", WorkingtimeController, :update_workingtimes_from_manager
+      delete "/workingtimes/:workingtime_id", WorkingtimeController, :delete_workingtimes_from_manager
       get "/clocks", ClockController, :get_team_clocks
     end
 
@@ -84,6 +84,8 @@ defmodule ToDoAPIWeb.Router do
       get "/workingtimes", WorkingtimeController, :get_all_workingtimes_date_range_admin
       get "/workingtimes/:user_id", WorkingtimeController, :get_workingtimes_specific_user
       post "workingtimes/:user_id", WorkingtimeController, :create_workingtimes_from_admin
+      put "/workingtimes/:workingtime_id", WorkingtimeController, :update_workingtimes_from_admin
+      delete "/workingtimes/:workingtime_id", WorkingtimeController, :delete_workingtimes_from_admin
 
       get "/teams", TeamController, :index
       scope "/clocks" do
