@@ -77,6 +77,7 @@ defmodule ToDoAPIWeb.Router do
       get "/user", UserController, :get_specific_user_email_username_from_admin
       get "/users", UserController, :get_all_users_from_admin
       post "/users", UserController, :create_new_user_from_admin
+      put "/users/:user_id", UserController, :update_user_from_admin
       get "/workingtimes/:user_id", WorkingtimeController, :get_workingtimes_specific_user
       scope "/clocks" do
         # get "/:user_id", ClockController, :get_clocks_for_user

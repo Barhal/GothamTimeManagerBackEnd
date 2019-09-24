@@ -86,6 +86,14 @@ defmodule ToDoAPIWeb.UserController do
     end
   end
 
+  def update_user_from_admin(conn, %{"user_id", "user" => user_params}) do
+    user = Res.get_user!(id)
+
+    with {:ok, %User{} = user} <- Res.update_user(user, user_params) do
+      render(conn, "show.json-api", data: user)
+    end
+  end
+
   def update_current_user(conn, %{"user" => user_params}) do
     current_user = Guardian.Plug.current_resource(conn)
     user = Res.get_user!(current_user.id)
