@@ -11,8 +11,8 @@ defmodule ToDoAPI.Res.User do
     field :role, :string, default: "employee"
     # Association
     belongs_to :team, ToDoAPI.Res.Team
-    has_many :workingtimes, ToDoAPI.Res.Workingtime
-    has_many :clocks, ToDoAPI.Res.Clock
+    has_many :workingtimes, ToDoAPI.Res.Workingtime, on_delete: :delete_all
+    has_many :clocks, ToDoAPI.Res.Clock, on_delete: :delete_all
     # Virtual fields
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
