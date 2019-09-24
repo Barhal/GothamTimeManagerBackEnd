@@ -57,13 +57,21 @@ defmodule ToDoAPIWeb.UserController do
     end
   end
 
-  def get_specific_user_email_username_from_admin(conn, %{"email" => email, "username" => username}) do
+  def get_specific_user_email_username_from_admin(conn, %{
+        "email" => email,
+        "username" => username
+      }) do
     user = Res.get_user_email_username(email, username)
     render(conn, "show.json-api", data: user)
   end
 
   def get_all_users_from_admin(conn, %{}) do
     users = Res.list_users()
+    render(conn, "index.json-api", data: users)
+  end
+
+  def get_list_employee_in_team_from_admin(conn, %{"team_id" => team_id}) do
+    users = Res.get_employee_from_team(team_id)
     render(conn, "index.json-api", data: users)
   end
 
@@ -86,8 +94,8 @@ defmodule ToDoAPIWeb.UserController do
     end
   end
 
-  def update_user_from_admin(conn, %{"user_id", "user" => user_params}) do
-    user = Res.get_user!(id)
+  def update_user_from_admin(conn, %{"user_id" => user_id, "user" => user_params}) do
+    user = Res.get_user!(user_id)
 
     with {:ok, %User{} = user} <- Res.update_user(user, user_params) do
       render(conn, "show.json-api", data: user)

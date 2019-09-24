@@ -76,10 +76,15 @@ defmodule ToDoAPIWeb.Router do
       pipe_through [:isadmin]
       get "/user", UserController, :get_specific_user_email_username_from_admin
       get "/users", UserController, :get_all_users_from_admin
+      get "/users/:team_id", UserController, :get_list_employee_in_team_from_admin
       post "/users", UserController, :create_new_user_from_admin
       put "/users/:user_id", UserController, :update_user_from_admin
       delete "/users/:user_id", UserController, :delete_user_from_admin
+
+      get "/workingtimes", WorkingtimeController, :get_all_workingtimes_date_range_admin
       get "/workingtimes/:user_id", WorkingtimeController, :get_workingtimes_specific_user
+
+      get "/teams", TeamController, :index
       scope "/clocks" do
         # get "/:user_id", ClockController, :get_clocks_for_user
       end

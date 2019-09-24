@@ -404,6 +404,14 @@ defmodule ToDoAPI.Res do
     Workingtime.changeset(workingtime, %{})
   end
 
+  def get_all_workingtimes_date_range_admin(start_value, end_value) do
+    Workingtime
+    |> where([wt], wt.start >= ^start_value and wt.end <= ^end_value)
+    #|> join(:left, [wt], user in assoc(wt, :user))
+    |> preload([:user])
+    |> Repo.all()
+  end
+
   def get_multiple_workingtimes(user_id, start_value, end_value) do
     Workingtime
     |> where([wt], wt.start >= ^start_value and wt.end <= ^end_value)

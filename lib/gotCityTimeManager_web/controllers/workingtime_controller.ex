@@ -88,6 +88,11 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     end
   end
 
+  def get_all_workingtimes_date_range_admin(conn, %{"start" => start_value, "end" => end_value}) do
+    workingtimes = Res.get_all_workingtimes_date_range_admin(start_value, end_value)
+    render(conn, "index.json-api", data: workingtimes)
+  end
+
   # http://localhost:4000/api/workingtimes/1
   def create_workingtime(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do
     with {:ok, %Workingtime{} = workingtime} <-
