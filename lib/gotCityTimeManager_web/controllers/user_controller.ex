@@ -103,6 +103,14 @@ defmodule ToDoAPIWeb.UserController do
     end
   end
 
+  def delete_user_from_admin(conn, %{"user_id" => user_id}) do
+    user = Res.get_user!(user_id)
+
+    with {:ok, %User{}} <- Res.delete_user(user) do
+      send_resp(conn, :no_content, "")
+    end
+  end
+
   def delete(conn, %{"id" => id}) do
     user = Res.get_user!(id)
 
