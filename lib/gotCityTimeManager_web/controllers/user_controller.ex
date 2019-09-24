@@ -56,13 +56,34 @@ defmodule ToDoAPIWeb.UserController do
       render(conn, "show.json-api", data: user)
     end
   end
+
   def get_specific_user_email_username_from_admin(conn, %{"email" => email, "username" => username}) do
     user = Res.get_user_email_username(email, username)
     render(conn, "show.json-api", data: user)
   end
+
   def get_all_users_from_admin(conn, %{}) do
     users = Res.list_users()
     render(conn, "index.json-api", data: users)
+  end
+
+  # {
+  #   "user" : {
+  #     "email": "arnaud9@ddddd",
+  #     "password": "password",
+  #     "password_confirmation": "password",
+  #     "username": "arnaud9",
+  #     "team_id": 3,
+  #     "role": "employee"
+  #   }
+  # }
+  # http://localhost:4000/api/adm/users      Paramètres "team_id" et "role" non obligatoire
+  def create_new_user_from_admin(conn, %{"user" => user_params}) do
+    with {:ok, %User{} = user} <- Res.create_user(user_params) do
+      conn
+      |> put_status(:created)
+      |> render("show.json-api", data: user)
+    end
   end
 
   def update_current_user(conn, %{"user" => user_params}) do
