@@ -240,6 +240,25 @@ defmodule ToDoAPI.Res do
     |> preload([{:user, :team}])
     |> Repo.all()
   end
+
+  def get_all_last_clocks() do
+    Clock
+    |> join(:left, [c], user in assoc(c, :user))
+    |> distinct([c], c.user_id)
+    |> order_by([c], [desc: c.time])
+    |> preload([:user])
+    |> Repo.all()
+  end
+
+  def get_last_clock_from_admin(user_id) do
+    Clock
+    |> join(:left, [c], u in assoc(c, :user))
+    |> where([c, u], u.id == ^user_id)
+    |> distinct([c], c.user_id)
+    |> order_by([c], [desc: c.time])
+    |> preload([:user])
+    |> Repo.all()
+  end
   @doc """
   Updates a clock.
 

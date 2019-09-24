@@ -168,7 +168,7 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     end
   end
 
-  def update_workingtimes_from_admin(conn, %{"workingtime_id" => workingtime_id}) do
+  def update_workingtimes_from_admin(conn, %{"workingtime_id" => workingtime_id, "workingtime" => workingtime_params}) do
     workingtime = Res.get_workingtime!(workingtime_id)
 
     with {:ok, %Workingtime{} = workingtime} <-

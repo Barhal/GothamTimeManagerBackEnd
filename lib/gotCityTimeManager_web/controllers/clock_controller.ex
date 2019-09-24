@@ -81,4 +81,19 @@ defmodule ToDoAPIWeb.ClockController do
     Logger.info("here")
     render(conn, "index.json-api", data: clocks)
   end
+
+  def get_all_status_from_admin(conn, %{}) do
+    clocks = Res.get_all_last_clocks()
+    render(conn, "index.json-api", data: clocks)
+  end
+
+  def get_team_status_from_admin(conn, %{"team_id" => team_id}) do
+    clocks = Res.get_clocks_from_team(team_id)
+    render(conn, "index.json-api", data: clocks)
+  end
+
+  def get_status_specific_user_from_admin(conn, %{"user_id" => user_id}) do
+    clock = Res.get_last_clock_from_admin(user_id)
+    render(conn, "index.json-api", data: clock)
+  end
 end

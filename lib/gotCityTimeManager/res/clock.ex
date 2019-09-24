@@ -15,5 +15,6 @@ defmodule ToDoAPI.Res.Clock do
     clock
     |> cast(attrs, [:time, :status, :user_id])
     |> validate_required([:time, :status, :user_id])
+    |> assoc_constraint(:user)
   end
 end

@@ -83,14 +83,14 @@ defmodule ToDoAPIWeb.Router do
 
       get "/workingtimes", WorkingtimeController, :get_all_workingtimes_date_range_admin
       get "/workingtimes/:user_id", WorkingtimeController, :get_workingtimes_specific_user
-      post "workingtimes/:user_id", WorkingtimeController, :create_workingtimes_from_admin
+      post "/workingtimes/:user_id", WorkingtimeController, :create_workingtimes_from_admin
       put "/workingtimes/:workingtime_id", WorkingtimeController, :update_workingtimes_from_admin
       delete "/workingtimes/:workingtime_id", WorkingtimeController, :delete_workingtimes_from_admin
 
+      get "/clocks", ClockController, :get_all_status_from_admin
+      get "/clock/:user_id", ClockController, :get_status_specific_user_from_admin
+      get "/clocks/:team_id", ClockController, :get_team_status_from_admin
       get "/teams", TeamController, :index
-      scope "/clocks" do
-        # get "/:user_id", ClockController, :get_clocks_for_user
-      end
     end
   end
 
