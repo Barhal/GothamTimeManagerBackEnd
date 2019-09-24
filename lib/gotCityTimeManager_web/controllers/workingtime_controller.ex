@@ -118,7 +118,7 @@ defmodule ToDoAPIWeb.WorkingtimeController do
     render(conn, "index.json-api", data: workingtimes, opts: [include: "user"])
   end
 
-  def create_workingtimes_manager(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do
+  def create_workingtimes_from_manager(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do
     current_user = Guardian.Plug.current_resource(conn)
     user = Res.get_user!(user_id)
     # Check if the user is in the team of the manager
@@ -138,6 +138,14 @@ defmodule ToDoAPIWeb.WorkingtimeController do
       |> put_status(:unauthorized)
       |> put_view(ToDoAPIWeb.ErrorView)
       |> render("405.json")
+    end
+  end
+
+  def create_workingtimes_from_admin(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do
+    with {:ok, %Workingtime{} = workingtime} <- Res.create_workingtime_start_end_user(workingtime_params["start"], workingtime_params["start"], user_id) do
+      conn
+        |> put_status(:created)
+        |> render("show.json-api", data: workingtime)
     end
   end
 

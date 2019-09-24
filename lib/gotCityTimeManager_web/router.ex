@@ -48,7 +48,7 @@ defmodule ToDoAPIWeb.Router do
   scope "/log", ToDoAPIWeb do
     pipe_through :json_api
     # Guest route
-    resources "/users", UserController, except: [:new, :edit]
+    # resources "/users", UserController, except: [:new, :edit]
     post "/sign_in", UserController, :sign_in
   end
 
@@ -66,7 +66,7 @@ defmodule ToDoAPIWeb.Router do
       get "/myteam", UserController, :get_list_employee_from_manager
       get "/workingtimes", WorkingtimeController, :get_team_workingtimes
       get "/workingtimes/:user_id", WorkingtimeController, :get_workingtimes_specific_user_in_manager_team
-      post "/workingtimes/:user_id", WorkingtimeController, :create_workingtimes_manager
+      post "/workingtimes/:user_id", WorkingtimeController, :create_workingtimes_from_manager
       put "/workingtimes/:workingtime_id", WorkingtimeController, :update_workingtimes_manager
       delete "/workingtimes/:workingtime_id", WorkingtimeController, :delete_workingtimes_manager
       get "/clocks", ClockController, :get_team_clocks
@@ -83,6 +83,7 @@ defmodule ToDoAPIWeb.Router do
 
       get "/workingtimes", WorkingtimeController, :get_all_workingtimes_date_range_admin
       get "/workingtimes/:user_id", WorkingtimeController, :get_workingtimes_specific_user
+      post "workingtimes/:user_id", WorkingtimeController, :create_workingtimes_from_admin
 
       get "/teams", TeamController, :index
       scope "/clocks" do
