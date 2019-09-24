@@ -202,30 +202,38 @@ defmodule ToDoAPI.Res do
   end
 
   def post_clock(user_id, time) do
-    last_clock =
-      Repo.one(
-        from c in Clock,
-          order_by: [desc: c.time],
-          where: c.user == ^user_id,
-          select: c,
-          limit: 1
-      )
+    # last_clock =
+    #   Repo.one(
+    #     from c in Clock,
+    #       order_by: [desc: c.time],
+    #       where: c.user == ^user_id,
+    #       select: c,
+    #       limit: 1
+    #   )
+    last_clock = Clock
+      |> join(:left, [c], u in assoc(c, :user))
+      |> where([c, u], u.id == ^user_id)
+      |> distinct([c], c.user_id)
+      |> order_by([c], [desc: c.time])
+      |> preload([:user])
+      |> Repo.one()
 
+    Logger.info(inspect(last_clock, pretty: true))
     if last_clock === nil do
       %Clock{}
-      |> Clock.changeset(%{time: time, status: true, user: user_id})
+      |> Clock.changeset(%{time: time, status: true, user_id: user_id})
       |> Repo.insert()
     else
       new_status = !last_clock.status
 
       if new_status === false do
         %Workingtime{}
-        |> Workingtime.changeset(%{start: last_clock.time, end: time, user: user_id})
+        |> Workingtime.changeset(%{start: last_clock.time, end: time, user_id: user_id})
         |> Repo.insert()
       end
 
       %Clock{}
-      |> Clock.changeset(%{time: time, status: new_status, user: user_id})
+      |> Clock.changeset(%{time: time, status: new_status, user_id: user_id})
       |> Repo.insert()
     end
   end
