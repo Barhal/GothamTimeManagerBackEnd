@@ -56,9 +56,19 @@ defmodule ToDoAPIWeb.UserController do
       render(conn, "show.json-api", data: user)
     end
   end
+  def get_specific_user_email_username_from_admin(conn, %{"email" => email, "username" => username}) do
+    user = Res.get_user_email_username(email, username)
+    render(conn, "show.json-api", data: user)
+  end
+  def get_all_users_from_admin(conn, %{}) do
+    users = Res.list_users()
+    render(conn, "index.json-api", data: users)
+  end
+
   def update_current_user(conn, %{"user" => user_params}) do
     current_user = Guardian.Plug.current_resource(conn)
     user = Res.get_user!(current_user.id)
+
     with {:ok, %User{} = user} <- Res.update_current_user(user, user_params) do
       render(conn, "show.json-api", data: user)
     end
@@ -79,6 +89,7 @@ defmodule ToDoAPIWeb.UserController do
   # }
   def sign_in(conn, %{"email" => email, "password" => password}) do
     Logger.info("signin")
+
     case Res.token_sign_in(email, password) do
       {:ok, token, _claims} ->
         conn |> render("jwt.json-api", jwt: token)
@@ -87,6 +98,7 @@ defmodule ToDoAPIWeb.UserController do
         {:error, :unauthorized}
     end
   end
+
   def get_list_employee_from_manager(conn, %{}) do
     current_user = Guardian.Plug.current_resource(conn)
     users = Res.get_employee_from_team(current_user.team_id)
