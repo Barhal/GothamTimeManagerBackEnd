@@ -17,6 +17,7 @@ RUN mix compile
 RUN apt-get update && apt-get install -y dos2unix
 
 COPY ./entrypoint.sh /entrypoint.sh
+# COPY ./adduserstodb.sh /adduserstodb.sh
 
 RUN dos2unix /entrypoint.sh && apt-get --purge remove -y dos2unix && rm -rf /var/lib/apt/lists/*
 

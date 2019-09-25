@@ -48,7 +48,7 @@ defmodule ToDoAPIWeb.Router do
   scope "/log", ToDoAPIWeb do
     pipe_through :json_api
     # Guest route
-    resources "/users", UserController, except: [:new, :edit]
+    # resources "/users", UserController, except: [:new, :edit]
     post "/sign_in", UserController, :sign_in
   end
 
