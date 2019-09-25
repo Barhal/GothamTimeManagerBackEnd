@@ -30,15 +30,19 @@ do
   echo "$(date) - waiting for database to start"
   sleep 2
 done
-
+mix ecto.drop
+echo "ENTRYPOINT HERE"
 # Create, migrate, and seed database if it doesn't exist.
 if [[ -z `psql -Atqc "\\list $PGDATABASE"` ]]; then
   echo "Database $PGDATABASE does not exist. Creating..."
   createdb -E UTF8 $PGDATABASE -l en_US.UTF-8 -T template0
   mix ecto.migrate
   mix run priv/repo/seeds/team_seeds.exs
+  mix run priv/repo/seeds/user_seeds.exs
+  mix run priv/repo/seeds/clock_seeds.exs
+  mix run priv/repo/seeds/workingtime_seeds.exs
 
   echo "Database $PGDATABASE created."
 fi
 
-exec mix phx.server & ./adduserstodb.sh
+exec mix phx.server

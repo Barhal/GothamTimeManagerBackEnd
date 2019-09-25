@@ -7,6 +7,12 @@ RUN mkdir /gotcitytimemanager
 COPY . /gotcitytimemanager
 WORKDIR /gotcitytimemanager
 
+ENV DB_HOST db
+ENV DB_USER postgres
+ENV DB_PASSWORD postgres
+ENV DB_NAME gotcitytimemanager_dev
+ENV DB_PORT 5432
+
 #RUN cd /gotcitytimemanager; \
 RUN mix local.hex --force; \
     mix local.rebar --force; \
