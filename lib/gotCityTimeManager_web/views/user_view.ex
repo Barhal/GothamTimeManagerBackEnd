@@ -19,12 +19,29 @@ defmodule ToDoAPIWeb.UserView do
   #     team: render_one(user.team, TeamView, "team.json")
   #   }
   # end
+
+  use ToDoAPIWeb, :view
+  use JaSerializer.PhoenixView
+  alias ToDoAPIWeb.UserView
+
+  require Logger
+
   def render("jwt.json-api", %{jwt: jwt}) do
     %{jwt: jwt}
   end
 
-  use ToDoAPIWeb, :view
-  use JaSerializer.PhoenixView
+  def render("role.json-api", %{ :user => r }) do
+    %{data: render_one(r, UserView, "r.json-api")}
+  end
+
+  def render("r.json-api", %{ :user => r }) do
+    f = Tuple.to_list(r)
+    %{_: f}
+  end
+
+  def render("roles.json-api", %{roles: roles})do
+    %{data: render_many(roles, UserView, "role.json-api")}
+  end
 
   attributes [:username, :email, :role]
 

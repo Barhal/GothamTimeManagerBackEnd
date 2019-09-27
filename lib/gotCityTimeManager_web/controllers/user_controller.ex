@@ -3,7 +3,7 @@ defmodule ToDoAPIWeb.UserController do
 
   require Logger
   require String.Chars
-
+  require Map
   alias ToDoAPI.Res
   alias ToDoAPI.Res.User
 
@@ -125,6 +125,12 @@ defmodule ToDoAPIWeb.UserController do
     with {:ok, %User{}} <- Res.delete_user(user) do
       send_resp(conn, :no_content, "")
     end
+  end
+
+  def get_all_roles(conn, %{}) do
+    r = Res.get_all_roles()
+    roles = Enum.to_list(r)
+    render(conn, "roles.json-api", roles: roles)
   end
 
   # sign_in expect object body like this

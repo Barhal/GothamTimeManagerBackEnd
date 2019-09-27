@@ -210,15 +210,17 @@ defmodule ToDoAPI.Res do
     #       select: c,
     #       limit: 1
     #   )
-    last_clock = Clock
+    last_clock =
+      Clock
       |> join(:left, [c], u in assoc(c, :user))
       |> where([c, u], u.id == ^user_id)
       |> distinct([c], c.user_id)
-      |> order_by([c], [desc: c.time])
+      |> order_by([c], desc: c.time)
       |> preload([:user])
       |> Repo.one()
 
     Logger.info(inspect(last_clock, pretty: true))
+
     if last_clock === nil do
       %Clock{}
       |> Clock.changeset(%{time: time, status: true, user_id: user_id})
@@ -244,7 +246,7 @@ defmodule ToDoAPI.Res do
     |> where([c, user], user.team_id == ^team_id)
     |> join(:left, [c, user], team in assoc(user, :team))
     |> distinct([c], c.user_id)
-    |> order_by([c], [desc: c.time])
+    |> order_by([c], desc: c.time)
     |> preload([{:user, :team}])
     |> Repo.all()
   end
@@ -253,7 +255,7 @@ defmodule ToDoAPI.Res do
     Clock
     |> join(:left, [c], user in assoc(c, :user))
     |> distinct([c], c.user_id)
-    |> order_by([c], [desc: c.time])
+    |> order_by([c], desc: c.time)
     |> preload([:user])
     |> Repo.all()
   end
@@ -263,10 +265,11 @@ defmodule ToDoAPI.Res do
     |> join(:left, [c], u in assoc(c, :user))
     |> where([c, u], u.id == ^user_id)
     |> distinct([c], c.user_id)
-    |> order_by([c], [desc: c.time])
+    |> order_by([c], desc: c.time)
     |> preload([:user])
     |> Repo.all()
   end
+
   @doc """
   Updates a clock.
 
@@ -434,7 +437,7 @@ defmodule ToDoAPI.Res do
   def get_all_workingtimes_date_range_admin(start_value, end_value) do
     Workingtime
     |> where([wt], wt.start >= ^start_value and wt.end <= ^end_value)
-    #|> join(:left, [wt], user in assoc(wt, :user))
+    # |> join(:left, [wt], user in assoc(wt, :user))
     |> preload([:user])
     |> Repo.all()
   end
@@ -567,6 +570,15 @@ defmodule ToDoAPI.Res do
   """
   def change_team(%Team{} = team) do
     Team.changeset(team, %{})
+  end
+
+  def get_all_roles() do
+    query =
+      from(u in User,
+        group_by: u.role,
+        select: {u.role}
+      )
+    Repo.all(query)
   end
 
   # GUARDIAN SIGN IN TOKEN

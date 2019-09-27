@@ -87,6 +87,7 @@ defmodule ToDoAPIWeb.Router do
       put "/workingtimes/:workingtime_id", WorkingtimeController, :update_workingtimes_from_admin
       delete "/workingtimes/:workingtime_id", WorkingtimeController, :delete_workingtimes_from_admin
 
+      get "/roles", UserController, :get_all_roles
       get "/clocks", ClockController, :get_all_status_from_admin
       get "/clock/:user_id", ClockController, :get_status_specific_user_from_admin
       get "/clocks/:team_id", ClockController, :get_team_status_from_admin
