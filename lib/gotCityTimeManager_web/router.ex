@@ -75,6 +75,7 @@ defmodule ToDoAPIWeb.Router do
     scope "/adm" do
       pipe_through [:isadmin]
       get "/user", UserController, :get_specific_user_email_username_from_admin
+      get "/user/:user_id", UserController, :show
       get "/users", UserController, :get_all_users_from_admin
       get "/users/:team_id", UserController, :get_list_employee_in_team_from_admin
       post "/users", UserController, :create_new_user_from_admin

@@ -39,8 +39,8 @@ defmodule ToDoAPIWeb.UserController do
   end
 
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def show(conn, %{"id" => id}) do
-    user = Res.get_user!(id)
+  def show(conn, %{"user_id" => user_id}) do
+    user = Res.get_user!(user_id)
     render(conn, "show.json-api", data: user)
   end
 
